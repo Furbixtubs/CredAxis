@@ -1,0 +1,59 @@
+const DATA = [
+  { id: "r1", name: "Monthly Portfolio Summary",   desc: "Aggregated loan performance, repayment rates and defaults.",  freq: "Monthly",   last: "1 Mar 2026" },
+  { id: "r2", name: "Risk Distribution Report",    desc: "Breakdown of borrowers across credit risk bands.",            freq: "Weekly",    last: "10 Mar 2026" },
+  { id: "r3", name: "Lender Allocation Report",    desc: "Capital allocation per lender and return metrics.",           freq: "Monthly",   last: "1 Mar 2026" },
+  { id: "r4", name: "Origination Funnel Report",   desc: "Applications, approvals and rejection rates by period.",      freq: "Weekly",    last: "10 Mar 2026" },
+  { id: "r5", name: "Regulatory Compliance Report",desc: "Data required for regulatory submissions.",                   freq: "Quarterly", last: "1 Jan 2026" },
+];
+
+export default function Reports() {
+  return (
+    <div>
+      <div style={s.header}>
+        <div>
+          <h1 style={s.title}>Reports</h1>
+          <p style={s.sub}>Generate and download platform reports</p>
+        </div>
+        <button style={s.btnPrimary}>+ Schedule report</button>
+      </div>
+
+      <div style={s.list}>
+        {DATA.map((r) => (
+          <div key={r.id} style={s.card}>
+            <div style={s.body}>
+              <div>
+                <p style={s.name}>{r.name}</p>
+                <p style={s.desc}>{r.desc}</p>
+                <p style={s.meta}>
+                  <span style={s.chip}>{r.freq}</span>
+                  Last generated: {r.last}
+                </p>
+              </div>
+              <div style={s.actions}>
+                <button style={s.btnGenerate}>Generate</button>
+                <button style={s.btnDownload}>Download ↓</button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+const s = {
+  header:      { display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "1.5rem" },
+  title:       { fontSize: "22px", fontWeight: "700", marginBottom: "0.25rem" },
+  sub:         { color: "#6b7280", fontSize: "14px" },
+  btnPrimary:  { background: "#111", color: "#fff", border: "none", borderRadius: "6px", padding: "8px 16px", fontSize: "14px", fontWeight: "500", cursor: "pointer" },
+  list:        { display: "flex", flexDirection: "column", gap: "0.75rem" },
+  card:        { background: "#fff", border: "1px solid #e5e7eb", borderRadius: "10px", padding: "1.25rem 1.5rem" },
+  body:        { display: "flex", justifyContent: "space-between", alignItems: "center", gap: "1rem", flexWrap: "wrap" },
+  name:        { fontWeight: "600", fontSize: "15px", marginBottom: "0.25rem" },
+  desc:        { fontSize: "13px", color: "#6b7280", maxWidth: "500px", marginBottom: "0.5rem" },
+  meta:        { fontSize: "13px", color: "#9ca3af", display: "flex", alignItems: "center", gap: "0.5rem" },
+  chip:        { background: "#f3f4f6", color: "#374151", padding: "1px 8px", borderRadius: "4px", fontSize: "12px", fontWeight: "500" },
+  actions:     { display: "flex", gap: "0.5rem", flexShrink: 0 },
+  btnGenerate: { background: "#111", color: "#fff", border: "none", borderRadius: "6px", padding: "7px 14px", fontSize: "13px", fontWeight: "500", cursor: "pointer" },
+  btnDownload: { background: "#fff", border: "1px solid #e5e7eb", borderRadius: "6px", padding: "7px 14px", fontSize: "13px", cursor: "pointer" },
+};

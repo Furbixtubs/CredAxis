@@ -1,0 +1,209 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
+/* ── Section wrapper ── */
+.features-section {
+  background: #1c1c1c;
+  padding: 96px 80px 112px;
+}
+
+/* ────────────────────────────
+   HEADER
+──────────────────────────── */
+.features-section__header {
+  text-align: center;
+  margin-bottom: 64px;
+}
+
+.features-section__label {
+  display: block;
+  font-family: "Poppins", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: #ffffff;
+  letter-spacing: 0.06em;
+  margin-bottom: 20px;
+}
+
+.features-section__title {
+  font-family: "Poppins", sans-serif;
+  font-size: 56px;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin: 0 0 20px 0;
+}
+
+.features-section__subtitle {
+  font-family: "Poppins", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: #9a9a9a;
+  letter-spacing: 0;
+  margin: 0;
+}
+
+/* ────────────────────────────
+   GRID — 3 equal columns
+──────────────────────────── */
+.features-section__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ────────────────────────────
+   CARD
+──────────────────────────── */
+.feat-card {
+  /* fallback color in case image fails to load */
+  background: #888888;
+  border-radius: 6px;
+  padding: 32px 28px 36px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  position: relative;
+  overflow: hidden;
+
+  /* make room for the background image and a dark overlay */
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-blend-mode: overlay;
+  /* semi‑transparent black to darken photos for legibility */
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* cube icon */
+.feat-card__icon {
+  margin-bottom: 40px;
+}
+
+/* title + image placeholder side-by-side */
+.feat-card__title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.feat-card__title {
+  font-family: "Poppins", sans-serif;
+  font-size: 30px;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  flex: 1;
+  margin: 0;
+}
+
+/* image placeholder box */
+.feat-card__img-placeholder {
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+
+.feat-card__img-placeholder svg {
+  display: block;
+  border-radius: 3px;
+}
+
+/* body text */
+.feat-card__body {
+  font-family: "Poppins", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: #ffffff;
+  line-height: 1.65;
+  margin: 0 0 28px 0;
+  opacity: 0.9;
+}
+
+/* learn link */
+.feat-card__learn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: "Poppins", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: #ffffff;
+  text-decoration: none;
+  margin-top: auto;
+  transition: gap 0.2s ease;
+}
+
+.feat-card__learn:hover {
+  gap: 10px;
+}
+
+/* ────────────────────────────
+   RESPONSIVE
+──────────────────────────── */
+@media (max-width: 1024px) {
+  .features-section {
+    padding: 80px 40px 96px;
+  }
+}
+
+@media (max-width: 860px) {
+  .features-section__grid {
+    grid-template-columns: 1fr;
+    max-width: 520px;
+  }
+
+  .features-section__title {
+    font-size: 40px;
+  }
+}
+
+@media (max-width: 520px) {
+  .features-section {
+    padding: 60px 20px 80px;
+  }
+
+  .features-section__header {
+    margin-bottom: 48px;
+  }
+
+  .features-section__label {
+    font-size: 12px;
+    margin-bottom: 16px;
+  }
+
+  .features-section__title {
+    font-size: 28px;
+    line-height: 1.2;
+    margin: 0 0 16px 0;
+  }
+
+  .features-section__subtitle {
+    font-size: 14px;
+  }
+
+  .features-section__grid {
+    gap: 16px;
+  }
+
+  .feat-card {
+    padding: 24px 20px 28px;
+  }
+
+  .feat-card__icon {
+    margin-bottom: 24px;
+  }
+
+  .feat-card__title {
+    font-size: 22px;
+  }
+
+  .feat-card__body {
+    font-size: 13px;
+    margin: 0 0 20px 0;
+  }
+}

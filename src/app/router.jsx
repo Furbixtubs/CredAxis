@@ -1,0 +1,114 @@
+import { lazy, Suspense } from "react";
+import { createBrowserRouter } from "react-router";
+
+import PublicLayout    from "../layouts/PublicLayout";
+import DashboardLayout from "../layouts/DashboardLayout";
+import SettingsLayout  from "../layouts/SettingsLayout";
+import ProtectedRoute  from "../features/auth/ProtectedRoute";
+
+// ── Loading fallback ──────────────────────────────────────────────────────────
+function Loader() {
+  return (
+    <div style={{ display: "grid", placeItems: "center", height: "60vh" }}>
+      <p style={{ color: "#9ca3af" }}>Loading…</p>
+    </div>
+  );
+}
+
+function wrap(Component) {
+  return (
+    <Suspense fallback={<Loader />}>
+      <Component />
+    </Suspense>
+  );
+}
+
+// ── Public pages ──────────────────────────────────────────────────────────────
+const Home          = lazy(() => import("../pages/public/Home"));
+const About         = lazy(() => import("../pages/public/About"));
+const Features      = lazy(() => import("../pages/public/Features"));
+const Documentation = lazy(() => import("../pages/public/Documentation"));
+const Contact       = lazy(() => import("../pages/public/Contact"));
+
+// ── Auth pages ────────────────────────────────────────────────────────────────
+const Login  = lazy(() => import("../pages/auth/Login"));
+const Signup = lazy(() => import("../pages/auth/Signup"));
+
+// ── Dashboard pages ───────────────────────────────────────────────────────────
+const Overview      = lazy(() => import("../pages/dashboard/overview/Overview"));
+const Borrowers     = lazy(() => import("../pages/dashboard/borrowers/Borrowers"));
+const BorrowerDetails = lazy(() => import("../pages/dashboard/borrowers/BorrowerDetails"));
+const Lenders       = lazy(() => import("../pages/dashboard/lenders/Lenders"));
+const CreditModels  = lazy(() => import("../pages/dashboard/credit-models/CreditModels"));
+const RiskAnalysis  = lazy(() => import("../pages/dashboard/risk-analysis/RiskAnalysis"));
+const Transactions  = lazy(() => import("../pages/dashboard/transactions/Transactions"));
+const Reports       = lazy(() => import("../pages/dashboard/reports/Reports"));
+const Integrations  = lazy(() => import("../pages/dashboard/integrations/Integrations"));
+const Profile       = lazy(() => import("../pages/dashboard/profile/Profile"));
+
+// Settings sub-pages
+const SettingsGeneral  = lazy(() => import("../pages/dashboard/settings/General"));
+const SettingsSecurity = lazy(() => import("../pages/dashboard/settings/Security"));
+const SettingsBilling  = lazy(() => import("../pages/dashboard/settings/Billing"));
+const SettingsTeam     = lazy(() => import("../pages/dashboard/settings/Team"));
+
+// 404
+const NotFound = lazy(() => import("../pages/NotFound"));
+
+// ── Router ────────────────────────────────────────────────────────────────────
+export const router = createBrowserRouter([
+
+  // ── Public website ──────────────────────────────────────────────────────────
+  {
+    path: "/",
+    element: <PublicLayout />,
+    children: [
+      { index: true,        element: wrap(Home) },
+      { path: "about",      element: wrap(About) },
+      { path: "features",   element: wrap(Features) },
+      { path: "docs",       element: wrap(Documentation) },
+      { path: "contact",    element: wrap(Contact) },
+    ],
+  },
+
+  // ── Auth pages (no layout wrapper) ─────────────────────────────────────────
+  { path: "/login",  element: wrap(Login) },
+  { path: "/signup", element: wrap(Signup) },
+
+  // ── Protected dashboard ─────────────────────────────────────────────────────
+  {
+    path: "/dashboard",
+    element: (
+      <ProtectedRoute>
+        <DashboardLayout />
+      </ProtectedRoute>
+    ),
+    children: [
+      { index: true,                  element: wrap(Overview) },
+      { path: "borrowers",            element: wrap(Borrowers) },
+      { path: "borrowers/:id",        element: wrap(BorrowerDetails) },
+      { path: "lenders",              element: wrap(Lenders) },
+      { path: "credit-models",        element: wrap(CreditModels) },
+      { path: "risk-analysis",        element: wrap(RiskAnalysis) },
+      { path: "transactions",         element: wrap(Transactions) },
+      { path: "reports",              element: wrap(Reports) },
+      { path: "integrations",         element: wrap(Integrations) },
+      { path: "profile",              element: wrap(Profile) },
+
+      // Settings with nested tab layout
+      {
+        path: "settings",
+        element: <SettingsLayout />,
+        children: [
+          { index: true,       element: wrap(SettingsGeneral) },
+          { path: "security",  element: wrap(SettingsSecurity) },
+          { path: "billing",   element: wrap(SettingsBilling) },
+          { path: "team",      element: wrap(SettingsTeam) },
+        ],
+      },
+    ],
+  },
+
+  // ── 404 ────────────────────────────────────────────────────────────────────
+  { path: "*", element: wrap(NotFound) },
+]);
