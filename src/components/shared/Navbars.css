@@ -63,6 +63,7 @@
   cursor: pointer;
   letter-spacing: 0.01em;
   transition: background 0.2s;
+  text-decoration: none;
 }
 
 .navbar__menu-btn:hover {
