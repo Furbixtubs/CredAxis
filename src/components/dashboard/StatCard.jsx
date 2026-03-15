@@ -15,15 +15,22 @@ export default function StatCard({ title, value, change, icon, iconBg }) {
   const isPositive = change >= 0;
 
   return (
-    <section className="card-base card-hover p-5 flex flex-col gap-3 animate-fade-in">
+    <section
+      style={{
+        backgroundColor: "#113ed2",
+        border: "none",
+        borderRadius: "0.75rem",
+      }}
+      className="stat-card animate-fade-in flex flex-col gap-3 border-none p-5"
+    >
       {/* Top row — title + icon */}
       <div className="flex items-center justify-between">
-        <p className="text-xs font-medium text-muted uppercase tracking-widest font-body">
+        <p className="font-body text-xs font-medium tracking-widest text-[#F0F4F8] uppercase">
           {title}
         </p>
         {icon && (
           <div
-            className={`w-8 h-8 rounded-lg flex items-center justify-center ${
+            className={`flex h-8 w-8 items-center justify-center rounded-lg ${
               iconBg || "bg-brand-blue/10"
             }`}
           >
@@ -32,26 +39,24 @@ export default function StatCard({ title, value, change, icon, iconBg }) {
         )}
       </div>
 
-      {/* Value */}
-      <p className="text-2xl font-bold text-neutral-50 font-heading leading-none">
-        {value}
-      </p>
+      <div className="flex items-end gap-2">
+        {/* Value */}
+        <p className="font-heading text-2xl leading-none text-white">{value}</p>
 
-      {/* Change indicator */}
-      {change !== undefined && (
-        <div
-          className={`flex items-center gap-1 text-xs font-medium ${
-            isPositive ? "text-risk-low" : "text-risk-high"
-          }`}
-        >
-          {isPositive ? <TrendingUp size={13} /> : <TrendingDown size={13} />}
-          <span>
-            {isPositive ? "+" : ""}
-            {change}%
-          </span>
-          <span className="text-secondary-500 font-normal">vs last month</span>
-        </div>
-      )}
+        {/* Change indicator */}
+        {change !== undefined && (
+          <div
+            className={`flex items-center gap-1 text-xs font-medium text-[#F0F4F8]`}
+          >
+            {isPositive ? <TrendingUp size={13} /> : <TrendingDown size={13} />}
+            <span>
+              {isPositive ? "+" : ""}
+              {change}%
+            </span>
+            {/* <span className=" font-normal">vs last month</span> */}
+          </div>
+        )}
+      </div>
     </section>
   );
 }

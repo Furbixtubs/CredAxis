@@ -101,13 +101,13 @@ function NavItem({ item }) {
       </button>
 
       {open && (
-        <div className="ml-7 mt-0.5 flex flex-col gap-0.5 border-l border-dark-border pl-3">
+        <div className="border-dark-border mt-0.5 ml-7 flex flex-col gap-0.5 border-l pl-3">
           {item.children.map((child) => (
             <NavLink
               key={child.to}
               to={child.to}
               className={({ isActive }) =>
-                `text-xs py-1.5 px-2 rounded-md transition-fast ${
+                `transition-fast rounded-md px-2 py-1.5 text-xs ${
                   isActive
                     ? "text-brand-teal font-medium"
                     : "text-secondary-400 hover:text-neutral-50"
@@ -133,8 +133,8 @@ export default function Sidebar() {
   };
 
   return (
-    <aside className="w-64 shrink-0 bg-primary-08 border-r border-dark-border flex flex-col gap-12 h-screen sticky top-0">
-      <h1 className="flex justify-center items-center">CredAxis</h1>
+    <aside className="bg-primary-08 border-dark-border sticky top-0 flex h-screen w-full min-w-[16rem] shrink-0 flex-col gap-12 border-r">
+      <h1 className="flex items-center justify-center p-4">CredAxis</h1>
     </aside>
   );
 }

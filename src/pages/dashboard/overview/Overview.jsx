@@ -1,5 +1,11 @@
 // src/pages/dashboard/overview/Overview.jsx
-import { Users, TrendingUp, ShieldAlert, PiggyBank } from "lucide-react";
+import {
+  Users,
+  TrendingUp,
+  ShieldAlert,
+  PiggyBank,
+  CircleDollarSign,
+} from "lucide-react";
 import StatCard from "@/components/dashboard/StatCard";
 import RiskDistributionChart from "@/components/dashboard/RiskDistributionChart";
 import OverviewChart from "@/components/dashboard/OverviewChart";
@@ -8,14 +14,14 @@ import { statsData } from "@/data/mockDashboard";
 
 export default function Overview() {
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-6 w-full">
       {/* ── Stat Cards ── */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 w-full sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard
           title="Total Borrowers"
           value={statsData.totalBorrowers.toLocaleString()}
-          icon={<Users size={15} className="text-brand-blue" />}
-          iconBg="bg-brand-blue/10"
+          icon={<Users size={15} className="text-brand-teal" />}
+          iconBg="bg-brand-teal/10"
         />
         <StatCard
           title="Approval Rate"
@@ -33,7 +39,7 @@ export default function Overview() {
         <StatCard
           title="Savings"
           value={`$${statsData.savings.toLocaleString()}`}
-          icon={<PiggyBank size={15} className="text-risk-low" />}
+          icon={<CircleDollarSign size={15} className="text-risk-medium" />}
           iconBg="bg-risk-low-bg/20"
         />
       </div>

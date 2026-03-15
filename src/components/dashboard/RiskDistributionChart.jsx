@@ -5,11 +5,11 @@ export default function RiskDistributionChart() {
   const total = riskDistributionData.reduce((sum, item) => sum + item.value, 0);
 
   return (
-    <section className="card-base p-4 flex flex-col gap-6 animate-fade-in h-full">
+    <section className="charts-card animate-fade-in flex h-full flex-col gap-6 p-4">
       {/* Header */}
-      <h3 className="text-lg font-semibold text-neutral-50 font-heading">
+      <p className="text-2xl font-normal text-neutral-50">
         Borrower Risk Distribution
-      </h3>
+      </p>
 
       {/* Risk rows */}
       <div className="flex flex-col gap-6">
@@ -20,23 +20,23 @@ export default function RiskDistributionChart() {
               <div className="flex items-center gap-2.5">
                 {/* Dot indicator */}
                 <span
-                  className="w-3 h-3 rounded-full shrink-0"
+                  className="h-3 w-3 shrink-0 rounded-full"
                   style={{ backgroundColor: item.color }}
                 />
-                <span className="text-base text-neutral-50 font-body">
+                <span className="font-body text-base text-neutral-50">
                   {item.label}
                 </span>
               </div>
 
-              {/* Count — large bold number */}
-              <span className="text-2xl font-bold text-neutral-50 font-heading">
+              {/* Count */}
+              <span className="font-heading text-2xl text-neutral-50">
                 {item.value}
               </span>
             </div>
 
             {/* Progress bar */}
             <div
-              className="w-full rounded-full overflow-hidden"
+              className="w-full overflow-hidden rounded-full"
               style={{
                 height: "12px",
                 backgroundColor: "var(--color-secondary-700)",

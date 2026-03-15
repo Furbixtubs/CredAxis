@@ -44,8 +44,8 @@ export default function BorrowersTable() {
   return (
     <div className="card-base animate-fade-in overflow-hidden">
       {/* Table header row */}
-      <div className="px-5 py-4 border-b border-dark-border">
-        <h3 className="text-sm font-semibold text-neutral-50 font-heading">
+      <div className="border-dark-border border-b px-5 py-4">
+        <h3 className="font-heading text-sm font-semibold text-neutral-50">
           Recent Borrowers
         </h3>
       </div>
@@ -54,19 +54,19 @@ export default function BorrowersTable() {
         <Table>
           <TableHeader>
             <TableRow className="border-dark-border hover:bg-transparent">
-              <TableHead className="text-secondary-400 text-xs font-medium uppercase tracking-wider pl-5">
+              <TableHead className="text-secondary-400 pl-5 text-center text-xs font-medium tracking-wider uppercase">
                 Name
               </TableHead>
-              <TableHead className="text-secondary-400 text-xs font-medium uppercase tracking-wider">
+              <TableHead className="text-secondary-400 text-center text-xs font-medium tracking-wider uppercase">
                 Risk Score
               </TableHead>
-              <TableHead className="text-secondary-400 text-xs font-medium uppercase tracking-wider">
+              <TableHead className="text-secondary-400 text-center text-xs font-medium tracking-wider uppercase">
                 Risk Band
               </TableHead>
-              <TableHead className="text-secondary-400 text-xs font-medium uppercase tracking-wider">
+              <TableHead className="text-secondary-400 text-center text-xs font-medium tracking-wider uppercase">
                 Recommended Limit
               </TableHead>
-              <TableHead className="text-secondary-400 text-xs font-medium uppercase tracking-wider">
+              <TableHead className="text-secondary-400 text-center text-xs font-medium tracking-wider uppercase">
                 Decision
               </TableHead>
             </TableRow>
@@ -76,25 +76,25 @@ export default function BorrowersTable() {
             {borrowersData.map((borrower) => (
               <TableRow
                 key={borrower.id}
-                className="border-dark-border hover:bg-surface-hover cursor-pointer transition-fast"
-                onClick={() => navigate(`/dashboard/borrowers/${borrower.id}`)}
+                className="border-dark-border hover:bg-surface-hover transition-fast cursor-pointer"
+                // onClick={() => navigate(`/dashboard/borrowers/${borrower.id}`)}z
               >
                 {/* Name + Avatar */}
-                <TableCell className="pl-5 py-3">
+                <TableCell className="py-3 pl-5">
                   <div className="flex items-center gap-3">
-                    <Avatar className="w-8 h-8">
+                    <Avatar className="h-8 w-8">
                       <AvatarFallback className="bg-brand-blue/20 text-brand-teal text-xs font-semibold">
                         {getInitials(borrower.name)}
                       </AvatarFallback>
                     </Avatar>
                     <div>
-                      <p className="text-sm font-medium text-neutral-50 font-body leading-none">
+                      <p className="font-body text-sm leading-none font-medium text-neutral-50">
                         {borrower.name}
                       </p>
                       {borrower.verified && (
-                        <div className="flex items-center gap-1 mt-0.5">
+                        <div className="mt-0.5 flex items-center gap-1">
                           <ShieldCheck size={10} className="text-brand-teal" />
-                          <span className="text-[10px] text-secondary-400">
+                          <span className="text-secondary-400 text-[10px]">
                             BVN verified
                           </span>
                         </div>
@@ -105,25 +105,25 @@ export default function BorrowersTable() {
 
                 {/* Risk Score */}
                 <TableCell className="py-3">
-                  <span className="text-sm font-semibold text-neutral-50 font-heading">
+                  <p className="font-heading text-center text-sm font-semibold text-neutral-50">
                     {borrower.riskScore}
-                  </span>
+                  </p>
                 </TableCell>
 
                 {/* Risk Band */}
-                <TableCell className="py-3">
+                <TableCell className="flex items-center justify-center py-3">
                   <RiskBadge type={getRiskType(borrower.riskBand)} />
                 </TableCell>
 
                 {/* Recommended Limit */}
                 <TableCell className="py-3">
-                  <span className="text-sm text-neutral-50 font-body">
+                  <p className="font-body text-center text-sm text-neutral-50">
                     ₦{borrower.recommendedLimit.toLocaleString()}
-                  </span>
+                  </p>
                 </TableCell>
 
                 {/* Decision */}
-                <TableCell className="py-3">
+                <TableCell className="flex items-center justify-center py-3">
                   <RiskBadge type={getDecisionType(borrower.decision)} />
                 </TableCell>
               </TableRow>

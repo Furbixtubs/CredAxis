@@ -18,12 +18,12 @@ const PERIODS = ["Monthly", "Weekly", "Daily"];
 function CustomTooltip({ active, payload, label }) {
   if (active && payload && payload.length) {
     return (
-      <div className="card-base px-3 py-2 text-xs space-y-1">
+      <div className="charts-card space-y-1 px-3 py-2 text-xs">
         <p className="text-secondary-400 mb-1">{label}</p>
         {payload.map((p) => (
           <div key={p.dataKey} className="flex items-center gap-2">
             <span
-              className="w-2 h-2 rounded-full"
+              className="h-2 w-2 rounded-full"
               style={{ backgroundColor: p.color }}
             />
             <span className="text-neutral-50 capitalize">{p.dataKey}:</span>
@@ -40,23 +40,23 @@ export default function OverviewChart() {
   const [activePeriod, setActivePeriod] = useState("Monthly");
 
   return (
-    <div className="card-base p-5 flex flex-col gap-4 animate-fade-in">
+    <div className="charts-card animate-fade-in flex h-full flex-col gap-4 p-5">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h3 className="text-sm font-semibold text-neutral-50 font-heading">
+        <h3 className="font-heading text-sm font-semibold text-neutral-50">
           Overview
         </h3>
 
         <div className="flex items-center gap-3">
           {/* Legend */}
-          <div className="flex items-center gap-3 mr-2">
+          <div className="mr-2 flex items-center gap-3">
             <div className="flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-brand-teal" />
-              <span className="text-xs text-secondary-400">Income</span>
+              <span className="bg-brand-teal h-2 w-2 rounded-full" />
+              <span className="text-secondary-400 text-xs">Income</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-brand-blue" />
-              <span className="text-xs text-secondary-400">Expenses</span>
+              <span className="bg-brand-blue h-2 w-2 rounded-full" />
+              <span className="text-secondary-400 text-xs">Expenses</span>
             </div>
           </div>
 
@@ -64,7 +64,7 @@ export default function OverviewChart() {
           <select
             value={activePeriod}
             onChange={(e) => setActivePeriod(e.target.value)}
-            className="text-xs bg-surface-secondary text-secondary-400 border border-dark-border rounded-md px-2 py-1 outline-none cursor-pointer"
+            className="bg-surface-secondary text-secondary-400 border-dark-border cursor-pointer rounded-md border px-2 py-1 text-xs outline-none"
           >
             {PERIODS.map((p) => (
               <option key={p} value={p}>
