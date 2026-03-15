@@ -27,7 +27,7 @@ export default function DashboardLayout() {
       : "Dashboard");
 
   return (
-    <div className=" dashboard-grid gap-4">
+    <div className=" dashboard-grid ">
       <Sidebar />
 
       <div className="flex-1 flex flex-col gap-4">

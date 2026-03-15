@@ -17,7 +17,7 @@ export default function Topbar({ title = "Dashboard" }) {
   const { user } = useAuth();
 
   return (
-    <header className="h-14 bg-surface-card border-b border-dark-border px-6 flex items-center justify-between shrink-0 sticky top-0 z-10 ">
+    <header className="h-14 bg-surface-card px-6 flex items-center justify-between shrink-0 sticky top-5 z-10 border-b ml-4 border-dark-border">
       {/* Page title */}
       <h1 className="text-base font-semibold text-neutral-50 font-heading">
         {title}
@@ -40,8 +40,6 @@ export default function Topbar({ title = "Dashboard" }) {
         {/* Notification bell */}
         <button className="relative p-2 rounded-lg text-secondary-400 hover:text-neutral-50 hover:bg-surface-hover transition-fast">
           <Bell size={16} />
-          {/* Unread dot */}
-          <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-brand-teal rounded-full" />
         </button>
 
         {/* Avatar */}
