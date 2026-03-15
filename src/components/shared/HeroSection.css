@@ -43,6 +43,11 @@
   line-height: 1;
 }
 
+.hero-logo img {
+  height: 90px;
+  width: auto;
+}
+
 /* ────────────────────────────
    HERO CARD
 ──────────────────────────── */
