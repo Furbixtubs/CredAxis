@@ -1,17 +1,18 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
 import { useAuth } from "../../features/auth/authContext";
-
+import "./Login.css";
+import logo from "../../assets/CredAxis_logo.png";
 export default function Login() {
-  const { login }  = useAuth();
-  const navigate   = useNavigate();
-  const location   = useLocation();
-  const from       = location.state?.from?.pathname || "/dashboard";
+  const { login } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/dashboard";
 
-  const [email,    setEmail]    = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error,    setError]    = useState(null);
-  const [loading,  setLoading]  = useState(false);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -32,66 +33,95 @@ export default function Login() {
   }
 
   return (
-    <div style={s.page}>
-      <div style={s.card}>
-        <Link to="/" style={s.brand}>CredAxis</Link>
-        <h1 style={s.title}>Welcome back</h1>
-        <p style={s.sub}>Sign in to your account</p>
+    <div className="login-page">
+      <div className="login-container">
+        {/* Logo/Hero */}
+        <div className="login-hero">
+          <div className="login-brand">
+            <img src={logo} alt="CredAxis Logo" className="logo-img" />
+            <span className="brand-name">
+              Cred<span className="brand-accent">Axis</span>
+            </span>
+          </div>
+        </div>
 
         {error && <div style={s.error}>{error}</div>}
 
-        <form onSubmit={handleSubmit} style={s.form}>
-          <label style={s.label}>
-            Email address
-            <input
-              type="email"
-              required
-              autoComplete="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              style={s.input}
-              placeholder="you@company.com"
-            />
-          </label>
+        {/* Form Card */}
+        <div className="login-form-wrapper">
+          <div className="login-card">
+            <h2 className="login-title">Login</h2>
 
-          <label style={s.label}>
-            Password
-            <input
-              type="password"
-              required
-              autoComplete="current-password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              style={s.input}
-              placeholder="••••••••"
-            />
-          </label>
+            <form onSubmit={handleSubmit}>
+              {/* Email */}
+              <div className="form-group">
+                <label htmlFor="email" className="form-label">
+                  Email
+                </label>
+                <input
+                  id="email"
+                  type="email"
+                  required
+                  className="form-input"
+                  autoComplete="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
 
-          <button type="submit" disabled={loading} style={s.btn}>
-            {loading ? "Signing in…" : "Sign in"}
-          </button>
-        </form>
+              {/* Staff ID */}
+              <div className="form-group">
+                <label htmlFor="staffId" className="form-label">
+                  Staff ID
+                </label>
+                <input id="staffId" type="text" className="form-input" />
+              </div>
 
-        <p style={s.footer}>
-          No account?{" "}
-          <Link to="/signup" style={s.link}>Create one</Link>
-        </p>
+              {/* Password */}
+              <div className="form-group form-group--last">
+                <label htmlFor="password" className="form-label">
+                  Password
+                </label>
+                <input
+                  id="password"
+                  type="password"
+                  required
+                  className="form-input"
+                  autoComplete="current-password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                />
+              </div>
+
+              {/* Continue Button */}
+              <button type="submit" disabled={loading} className="btn-continue">
+                {loading ? "Signing in…" : "Sign in"}
+              </button>
+            </form>
+
+            {/* Sign Up Link */}
+            <p className="signup-prompt">
+              Don't Have an account?{" "}
+              <Link to="/signup" className="signup-link">
+                Sign up
+              </Link>
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );
 }
 
 const s = {
-  page:  { display: "grid", placeItems: "center", minHeight: "100vh", background: "#f8f9fb", padding: "2rem" },
-  card:  { background: "#fff", border: "1px solid #e5e7eb", borderRadius: "12px", padding: "2.5rem", width: "100%", maxWidth: "400px" },
-  brand: { textDecoration: "none", fontWeight: "700", fontSize: "18px", color: "#111", display: "block", marginBottom: "1.75rem" },
-  title: { fontSize: "22px", fontWeight: "700", marginBottom: "0.25rem" },
-  sub:   { color: "#6b7280", fontSize: "14px", marginBottom: "1.5rem" },
-  error: { background: "#fef2f2", color: "#dc2626", border: "1px solid #fecaca", borderRadius: "6px", padding: "10px 14px", fontSize: "14px", marginBottom: "1rem" },
-  form:  { display: "flex", flexDirection: "column", gap: "1rem" },
-  label: { display: "flex", flexDirection: "column", gap: "6px", fontSize: "14px", fontWeight: "500" },
-  input: { padding: "9px 12px", border: "1px solid #e5e7eb", borderRadius: "6px", fontSize: "14px", outline: "none" },
-  btn:   { background: "#111", color: "#fff", border: "none", borderRadius: "7px", padding: "11px", fontSize: "15px", fontWeight: "500", cursor: "pointer", marginTop: "0.25rem" },
-  footer:{ textAlign: "center", marginTop: "1.5rem", fontSize: "14px", color: "#6b7280" },
-  link:  { color: "#111", fontWeight: "600", textDecoration: "none" },
+  error: {
+    background: "#fef2f2",
+    color: "#dc2626",
+    border: "1px solid #fecaca",
+    borderRadius: "6px",
+    padding: "10px 14px",
+    fontSize: "14px",
+    marginBottom: "1rem",
+  },
 };

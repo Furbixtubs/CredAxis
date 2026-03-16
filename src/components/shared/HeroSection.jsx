@@ -1,5 +1,6 @@
 import "./HeroSection.css";
 import { Link } from "react-router";
+import logo from "../../assets/CredAxis_logo.png";
 
 export default function HeroSection() {
   return (
@@ -7,41 +8,7 @@ export default function HeroSection() {
       <div className="hero-wrapper__container">
         {/* ── Centered Logo ── */}
         <div className="hero-logo">
-          {/* CredAxis icon: green + yellow curved swooshes forming the "3" */}
-          <svg
-            className="hero-logo__icon"
-            width="52"
-            height="52"
-            viewBox="0 0 52 52"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            {/* Yellow/gold upper-right arc — top curve of the "3" */}
-            <path
-              d="M26 8 C36 8, 44 14, 44 22 C44 28, 39 32, 33 33"
-              stroke="#f5c518"
-              strokeWidth="7"
-              strokeLinecap="round"
-              fill="none"
-            />
-            {/* Green lower arc — bottom curve + tail of the "3" */}
-            <path
-              d="M33 33 C39 34, 44 38, 44 44 C44 50, 36 54, 26 50 C20 48, 15 44, 13 40"
-              stroke="#22c55e"
-              strokeWidth="7"
-              strokeLinecap="round"
-              fill="none"
-            />
-            {/* Small green hook / serif at top-left of the 3 */}
-            <path
-              d="M18 10 L26 8"
-              stroke="#22c55e"
-              strokeWidth="7"
-              strokeLinecap="round"
-              fill="none"
-            />
-          </svg>
-
+          <img src={logo} alt="CredAxis logo" />
           <span className="hero-logo__text">CredAxis</span>
         </div>
 
