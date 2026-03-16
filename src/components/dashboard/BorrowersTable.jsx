@@ -42,31 +42,31 @@ export default function BorrowersTable() {
   const navigate = useNavigate();
 
   return (
-    <div className="card-base animate-fade-in overflow-hidden">
+    <div className="animate-fade-in overflow-hidden rounded-[20px] bg-white">
       {/* Table header row */}
-      <div className="border-dark-border border-b px-5 py-4">
-        <h3 className="font-heading text-sm font-semibold text-neutral-50">
+      <div className="px-5 text-black">
+        <p className="border-dark-border font-heading border-b py-4 text-sm font-semibold text-black">
           Recent Borrowers
-        </h3>
+        </p>
       </div>
 
       <div className="overflow-x-auto">
         <Table>
           <TableHeader>
-            <TableRow className="border-dark-border hover:bg-transparent">
-              <TableHead className="text-secondary-400 pl-5 text-center text-xs font-medium tracking-wider uppercase">
+            <TableRow className="hover:bg-transparent">
+              <TableHead className="text-primary-08 pl-5 text-center text-xs font-medium tracking-wider uppercase">
                 Name
               </TableHead>
-              <TableHead className="text-secondary-400 text-center text-xs font-medium tracking-wider uppercase">
+              <TableHead className="text-primary-08 text-center text-xs font-medium tracking-wider uppercase">
                 Risk Score
               </TableHead>
-              <TableHead className="text-secondary-400 text-center text-xs font-medium tracking-wider uppercase">
+              <TableHead className="text-primary-08 text-center text-xs font-medium tracking-wider uppercase">
                 Risk Band
               </TableHead>
-              <TableHead className="text-secondary-400 text-center text-xs font-medium tracking-wider uppercase">
+              <TableHead className="text-primary-08 text-center text-xs font-medium tracking-wider uppercase">
                 Recommended Limit
               </TableHead>
-              <TableHead className="text-secondary-400 text-center text-xs font-medium tracking-wider uppercase">
+              <TableHead className="text-primary-08 text-center text-xs font-medium tracking-wider uppercase">
                 Decision
               </TableHead>
             </TableRow>
@@ -76,8 +76,7 @@ export default function BorrowersTable() {
             {borrowersData.map((borrower) => (
               <TableRow
                 key={borrower.id}
-                className="border-dark-border hover:bg-surface-hover transition-fast cursor-pointer"
-                // onClick={() => navigate(`/dashboard/borrowers/${borrower.id}`)}z
+                className="transition-fast cursor-pointer hover:bg-gray-200"
               >
                 {/* Name + Avatar */}
                 <TableCell className="py-3 pl-5">
@@ -88,13 +87,13 @@ export default function BorrowersTable() {
                       </AvatarFallback>
                     </Avatar>
                     <div>
-                      <p className="font-body text-sm leading-none font-medium text-neutral-50">
+                      <p className="font-body text-sm leading-none font-medium text-black">
                         {borrower.name}
                       </p>
                       {borrower.verified && (
                         <div className="mt-0.5 flex items-center gap-1">
                           <ShieldCheck size={10} className="text-brand-teal" />
-                          <span className="text-secondary-400 text-[10px]">
+                          <span className="text-[10px] text-black">
                             BVN verified
                           </span>
                         </div>
@@ -105,7 +104,7 @@ export default function BorrowersTable() {
 
                 {/* Risk Score */}
                 <TableCell className="py-3">
-                  <p className="font-heading text-center text-sm font-semibold text-neutral-50">
+                  <p className="text-center text-sm text-black">
                     {borrower.riskScore}
                   </p>
                 </TableCell>
@@ -117,7 +116,7 @@ export default function BorrowersTable() {
 
                 {/* Recommended Limit */}
                 <TableCell className="py-3">
-                  <p className="font-body text-center text-sm text-neutral-50">
+                  <p className="font-body text-center text-sm text-black">
                     ₦{borrower.recommendedLimit.toLocaleString()}
                   </p>
                 </TableCell>

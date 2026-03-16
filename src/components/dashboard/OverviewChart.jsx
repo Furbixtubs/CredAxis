@@ -102,10 +102,10 @@ export default function OverviewChart() {
             <Line
               type="monotone"
               dataKey="income"
-              stroke="var(--color-brand-teal)"
+              stroke="#1FCB4F"
               strokeWidth={2}
               dot={false}
-              activeDot={{ r: 4, fill: "var(--color-brand-teal)" }}
+              activeDot={{ r: 4, fill: "#1FCB4F" }}
             />
             <Line
               type="monotone"

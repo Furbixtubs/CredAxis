@@ -420,7 +420,7 @@ select {
   .charts-card {
     background-color: #061546;
     border: none;
-    border-radius: 0.75rem;
+    border-radius: 20px;
   }
 
   .card-base {
@@ -444,10 +444,13 @@ select {
       0 2px 4px -2px rgb(0 0 0 / 0.4);
   }
 
-  /* ── Risk Badges ── */
+  /* Risk Badges & Decision Badges */
   .badge-low-risk,
   .badge-medium-risk,
-  .badge-high-risk {
+  .badge-high-risk,
+  .badge-approved,
+  .badge-rejected,
+  .badge-pending {
     width: 125px;
     border-radius: 6px;
     display: flex;
@@ -457,7 +460,8 @@ select {
     padding: 0.125rem 0.625rem;
   }
 
-  .badge-low-risk {
+  .badge-low-risk,
+  .badge-approved {
     background-color: var(--color-risk-low);
     color: white;
   }
@@ -467,33 +471,18 @@ select {
     color: var(--color-primary-11);
   }
 
-  .badge-high-risk {
+  .badge-high-risk,
+  .badge-rejected {
     background-color: var(--color-risk-high);
     color: white;
   }
 
-  /* ── Decision Badges ── */
-  .badge-approved {
-    background-color: var(--color-status-approved-bg);
-    color: var(--color-status-approved-text);
-    border-radius: 9999px;
-    padding: 0.125rem 0.625rem;
-    font-size: 0.75rem;
-    font-weight: 500;
-    display: inline-flex;
-    align-items: center;
+  .badge-approved,
+  .badge-rejected {
+    border-radius: 10px;
   }
 
-  .badge-rejected {
-    background-color: var(--color-status-rejected-bg);
-    color: var(--color-status-rejected-text);
-    border-radius: 9999px;
-    padding: 0.125rem 0.625rem;
-    font-size: 0.75rem;
-    font-weight: 500;
-    display: inline-flex;
-    align-items: center;
-  }
+  /* ── Decision Badges ── */
 
   .badge-pending {
     background-color: var(--color-status-pending-bg);
