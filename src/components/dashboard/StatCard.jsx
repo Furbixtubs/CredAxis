@@ -21,7 +21,7 @@ export default function StatCard({ title, value, change, icon, iconBg }) {
         border: "none",
         borderRadius: "0.75rem",
       }}
-      className="stat-card animate-fade-in flex flex-col gap-3 border-none p-5"
+      className="stat-card animate-fade-in flex flex-col justify-center gap-2 border-none p-4"
     >
       {/* Top row — title + icon */}
       <div className="flex items-center justify-between">
@@ -39,7 +39,7 @@ export default function StatCard({ title, value, change, icon, iconBg }) {
         )}
       </div>
 
-      <div className="flex items-end gap-2">
+      <div className="flex gap-2">
         {/* Value */}
         <p className="font-heading text-2xl leading-none text-white">{value}</p>
 
@@ -53,7 +53,6 @@ export default function StatCard({ title, value, change, icon, iconBg }) {
               {isPositive ? "+" : ""}
               {change}%
             </span>
-            {/* <span className=" font-normal">vs last month</span> */}
           </div>
         )}
       </div>

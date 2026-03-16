@@ -1,0 +1,19 @@
+import { createContext, useContext, useState } from "react";
+
+const DashboardContext = createContext(null);
+
+export function DashboardProvider({ children }) {
+  const [searchQuery, setSearchQuery] = useState("");
+
+  return (
+    <DashboardContext.Provider value={{ searchQuery, setSearchQuery }}>
+      {children}
+    </DashboardContext.Provider>
+  );
+}
+
+export function useDashboard() {
+  const ctx = useContext(DashboardContext);
+  if (!ctx) throw new Error("useDashboard must be inside <DashboardProvider>");
+  return ctx;
+}

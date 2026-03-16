@@ -7,9 +7,9 @@ export default function RiskDistributionChart() {
   return (
     <section className="charts-card animate-fade-in flex h-full flex-col gap-6 p-4">
       {/* Header */}
-      <p className="text-2xl font-normal text-neutral-50">
+      <h4 className="text-2xl font-normal text-white">
         Borrower Risk Distribution
-      </p>
+      </h4>
 
       {/* Risk rows */}
       <div className="flex flex-col gap-6">
@@ -39,13 +39,13 @@ export default function RiskDistributionChart() {
               className="w-full overflow-hidden rounded-full"
               style={{
                 height: "12px",
-                backgroundColor: "var(--color-secondary-700)",
+                backgroundColor: "#D9D9D9",
               }}
             >
               <div
                 className="h-full rounded-full transition-all duration-700"
                 style={{
-                  width: `${(item.value / total) * 100}%`,
+                  width: `${(item.value / total) * 160}%`,
                   backgroundColor: item.color,
                 }}
               />

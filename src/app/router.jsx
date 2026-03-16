@@ -36,6 +36,9 @@ const Signup = lazy(() => import("../pages/auth/Signup"));
 
 // ── Dashboard pages ───────────────────────────────────────────────────────────
 const Overview = lazy(() => import("../pages/dashboard/overview/Overview"));
+const AddBorrower = lazy(
+  () => import("../pages/dashboard/add-borrower/AddBorrower"),
+);
 const Borrowers = lazy(() => import("../pages/dashboard/borrowers/Borrowers"));
 const BorrowerDetails = lazy(
   () => import("../pages/dashboard/borrowers/BorrowerDetails"),
@@ -100,6 +103,7 @@ export const router = createBrowserRouter([
     ),
     children: [
       { index: true, element: wrap(Overview) },
+      { path: "add-borrower", element: wrap(AddBorrower) },
       { path: "borrowers", element: wrap(Borrowers) },
       { path: "borrowers/:id", element: wrap(BorrowerDetails) },
       { path: "lenders", element: wrap(Lenders) },

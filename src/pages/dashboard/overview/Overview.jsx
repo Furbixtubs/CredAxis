@@ -1,9 +1,9 @@
-// src/pages/dashboard/overview/Overview.jsx
+import { useState } from "react";
 import {
   Users,
   TrendingUp,
   ShieldAlert,
-  PiggyBank,
+  // PiggyBank,
   CircleDollarSign,
 } from "lucide-react";
 import StatCard from "@/components/dashboard/StatCard";
@@ -13,10 +13,12 @@ import BorrowersTable from "@/components/dashboard/BorrowersTable";
 import { statsData } from "@/data/mockDashboard";
 
 export default function Overview() {
+  const [searchQuery, setSearchQuery] = useState("");
+
   return (
-    <div className="flex flex-col gap-6 w-full">
+    <div className="flex w-full flex-col gap-6">
       {/* ── Stat Cards ── */}
-      <div className="grid grid-cols-1 w-full sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard
           title="Total Borrowers"
           value={statsData.totalBorrowers.toLocaleString()}
@@ -45,7 +47,7 @@ export default function Overview() {
       </div>
 
       {/* ── Charts Row ── */}
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-5">
         {/* Risk Distribution — narrower */}
         <div className="lg:col-span-2">
           <RiskDistributionChart />

@@ -133,7 +133,7 @@ export default function Sidebar() {
   };
 
   return (
-    <aside className="bg-primary-08 border-dark-border sticky top-0 flex h-screen w-full min-w-[16rem] shrink-0 flex-col gap-12 border-r">
+    <aside className="bg-primary-08 border-dark-border text-white sticky top-0 flex h-screen w-full min-w-[16rem] shrink-0 flex-col gap-12 border-r">
       <h1 className="flex items-center justify-center p-4">CredAxis</h1>
     </aside>
   );

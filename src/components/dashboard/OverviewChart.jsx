@@ -40,12 +40,10 @@ export default function OverviewChart() {
   const [activePeriod, setActivePeriod] = useState("Monthly");
 
   return (
-    <div className="charts-card animate-fade-in flex h-full flex-col gap-4 p-5">
+    <div className="charts-card animate-fade-in flex h-full flex-col gap-4 px-4 py-6">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h3 className="font-heading text-sm font-semibold text-neutral-50">
-          Overview
-        </h3>
+        <h4 className="text-xs text-white">Overview</h4>
 
         <div className="flex items-center gap-3">
           {/* Legend */}
@@ -64,7 +62,8 @@ export default function OverviewChart() {
           <select
             value={activePeriod}
             onChange={(e) => setActivePeriod(e.target.value)}
-            className="bg-surface-secondary text-secondary-400 border-dark-border cursor-pointer rounded-md border px-2 py-1 text-xs outline-none"
+            style={{ border: "1px solid #383838" }}
+            className="text-secondary-400 cursor-pointer rounded-md bg-transparent px-2 py-1 text-xs outline-none"
           >
             {PERIODS.map((p) => (
               <option key={p} value={p}>

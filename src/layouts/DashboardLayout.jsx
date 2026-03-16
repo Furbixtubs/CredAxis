@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Outlet, useLocation } from "react-router";
 import Sidebar from "../components/dashboard/Sidebar";
 import Topbar from "../components/dashboard/Topbar";
+import { DashboardProvider } from "@/features/auth/dashboard/dashboardContext";
 
 const PAGE_TITLES = {
   "/dashboard": "Dashboard",
@@ -29,21 +30,23 @@ export default function DashboardLayout() {
       : "Dashboard");
 
   return (
-    <div className="flex min-h-screen">
-      <div
-        className={`fixed inset-y-0 left-0 z-30 transition-transform duration-300 ease-in-out md:static md:z-auto md:translate-x-0 ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} `}
-      >
-        <Sidebar />
-      </div>
+    <DashboardProvider>
+      <div className="flex min-h-screen">
+        <div
+          className={`fixed inset-y-0 left-0 z-30 transition-transform duration-300 ease-in-out md:static md:z-auto md:translate-x-0 ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} `}
+        >
+          <Sidebar />
+        </div>
 
-      {/* Main content*/}
-      <div className="flex min-w-0 flex-1 flex-col bg-linear-to-br from-[#061546] via-[#0B298C] to-sky-500">
-        <Topbar title={title} />
+        {/* Main content*/}
+        <div className="flex min-w-0 flex-1 flex-col bg-linear-to-br from-[#061546] via-[#0B298C] to-sky-500">
+          <Topbar title={title} />
 
-        <main className="mt-4 flex-1 overflow-auto p-4 md:p-6">
-          <Outlet />
-        </main>
+          <main className="mt-4 flex-1 overflow-auto p-4 md:p-6">
+            <Outlet />
+          </main>
+        </div>
       </div>
-    </div>
+    </DashboardProvider>
   );
 }

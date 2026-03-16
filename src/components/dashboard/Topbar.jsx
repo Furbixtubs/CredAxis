@@ -3,6 +3,7 @@ import { Bell, Search } from "lucide-react";
 import { Input } from "../ui/input";
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import { useAuth } from "../../features/auth/authContext";
+import { useDashboard } from "@/features/auth/dashboard/dashboardContext";
 
 function getInitials(name = "") {
   return name
@@ -16,12 +17,14 @@ function getInitials(name = "") {
 export default function Topbar({ title = "Dashboard" }) {
   const { user } = useAuth();
 
+  const { searchQuery, setSearchQuery } = useDashboard();
+
   return (
     <header className="bg-surface-card sticky top-5 z-10 mx-4 flex h-20 shrink-0 items-center justify-between rounded-lg px-6">
       {/* Page title */}
-      <h1 className="font-heading text-2xl font-semibold text-neutral-50 md:text-3xl">
+      <h2 className="font-heading text-2xl font-semibold text-white md:text-3xl">
         {title}
-      </h1>
+      </h2>
 
       {/* Right side */}
       <div className="flex items-center gap-2 md:gap-1.5 lg:gap-3">
@@ -29,10 +32,11 @@ export default function Topbar({ title = "Dashboard" }) {
         <div className="relative hidden rounded-lg bg-[#282C35] sm:block lg:min-w-3xs">
           <Input
             placeholder="Search..."
-            className="placeholder:text-placeholder focus-visible:ring-brand-blue h-8 w-full border-none text-xs text-neutral-50"
+            className="placeholder:text-placeholder focus-visible:ring-brand-blue h-8 w-full border-0 border-none p-4 text-xs text-neutral-50 outline-none"
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
           <Search
-            size={14}
+            size={20}
             className="text-placeholder pointer-events-none absolute top-1/2 right-3 -translate-y-1/2"
           />
         </div>
