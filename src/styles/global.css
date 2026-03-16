@@ -1,38 +1,252 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500&display=swap");
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "@fontsource-variable/geist";
+
+@custom-variant dark (&:is(.dark *));
+
 /* ===== DESIGN TOKENS ===== */
 :root {
+  /* ── Your Brand Colors ── */
+  --color-brand-navy: #0b1120;
+  --color-brand-blue: #1a56db;
+  --color-brand-teal: #2dd4bf;
+
+  /* ── Primary Palette ── */
   --color-primary-50: #eff6ff;
   --color-primary-100: #dbeafe;
   --color-primary-600: #1d4ed8;
   --color-primary-700: #1e40af;
   --color-primary-800: #1e3a8a;
 
-  --color-brand-blue: #1a56db;
-  --color-brand-teal: #2dd4bf;
-  --color-brand-navy: #0b1120;
+  /* Godstime tailwind styles */
+  --color-primary-08: #0b298c;
+  --color-primary-11: #030c2a;
+  --color-placeholder: #9e9e9e;
 
+  /* ── Secondary Palette ── */
   --color-secondary-400: #94a3b8;
   --color-secondary-500: #64748b;
   --color-secondary-600: #475569;
   --color-secondary-700: #334155;
   --color-secondary-800: #1e293b;
 
+  /* ── Neutral Palette ── */
   --color-neutral-50: #f8fafc;
   --color-neutral-100: #f1f5f9;
   --color-neutral-200: #e2e8f0;
 
+  /* ── Risk Colors ── */
+  --color-risk-low: #007020;
+  --color-risk-low-bg: #dcfce7;
+  --color-risk-low-text: #15803d;
+  --color-risk-medium: #e8c272;
+  --color-risk-medium-bg: #fef3c7;
+  --color-risk-medium-text: #b45309;
+  --color-risk-high: #88100b;
+  --color-risk-high-bg: #fee2e2;
+  --color-risk-high-text: #b91c1c;
+
+  /* ── Status Colors ── */
+  --color-status-approved: #22c55e;
+  --color-status-approved-bg: #dcfce7;
+  --color-status-approved-text: #15803d;
+  --color-status-rejected: #ef4444;
+  --color-status-rejected-bg: #fee2e2;
+  --color-status-rejected-text: #b91c1c;
+  --color-status-pending: #f59e0b;
+  --color-status-pending-bg: #fef3c7;
+  --color-status-pending-text: #b45309;
+
+  /* ── Surface / UI ── */
+  --color-surface-primary: #0b1120;
+  --color-surface-secondary: #1e293b;
+  --color-surface-card: #162032;
+  --color-surface-hover: #1e2d42;
   --color-dark-border: #1f2937;
 
+  /* ── Typography ── */
   --font-heading: "Poppins", sans-serif;
   --font-body: "Roboto", sans-serif;
 
+  /* ── Container ── */
   --container-max: 1200px;
+
+  /* ── Shadcn Tokens (light) ── */
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.809 0.105 251.813);
+  --chart-2: oklch(0.623 0.214 259.815);
+  --chart-3: oklch(0.546 0.245 262.881);
+  --chart-4: oklch(0.488 0.243 264.376);
+  --chart-5: oklch(0.424 0.199 265.638);
+  --radius: 0.625rem;
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
 }
 
-/* ===== RESET ===== */
+/* ===== DARK MODE ===== */
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.809 0.105 251.813);
+  --chart-2: oklch(0.623 0.214 259.815);
+  --chart-3: oklch(0.546 0.245 262.881);
+  --chart-4: oklch(0.488 0.243 264.376);
+  --chart-5: oklch(0.424 0.199 265.638);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
+}
+
+/* ===== TAILWIND THEME REGISTRATION ===== */
+@theme inline {
+  /* ── Shadcn mappings ── */
+  --font-sans: "Geist Variable", sans-serif;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* ── Your brand tokens as Tailwind utilities ── */
+  --color-brand-navy: var(--color-brand-navy);
+  --color-brand-blue: var(--color-brand-blue);
+  --color-brand-teal: var(--color-brand-teal);
+
+  /* Godstime tailwind styles */
+  --color-primary-08: var(--color-primary-08);
+  --color-primary-11: var(--color-primary-11);
+  --color-placeholder: var(--color-placeholder);
+
+  --color-surface-primary: var(--color-surface-primary);
+  --color-surface-secondary: var(--color-surface-secondary);
+  --color-surface-card: var(--color-surface-card);
+  --color-surface-hover: var(--color-surface-hover);
+  --color-dark-border: var(--color-dark-border);
+
+  --color-neutral-50: var(--color-neutral-50);
+  --color-neutral-100: var(--color-neutral-100);
+  --color-neutral-200: var(--color-neutral-200);
+
+  --color-secondary-400: var(--color-secondary-400);
+  --color-secondary-500: var(--color-secondary-500);
+  --color-secondary-600: var(--color-secondary-600);
+  --color-secondary-700: var(--color-secondary-700);
+  --color-secondary-800: var(--color-secondary-800);
+
+  --color-risk-low: var(--color-risk-low);
+  --color-risk-low-bg: var(--color-risk-low-bg);
+  --color-risk-low-text: var(--color-risk-low-text);
+  --color-risk-medium: var(--color-risk-medium);
+  --color-risk-medium-bg: var(--color-risk-medium-bg);
+  --color-risk-medium-text: var(--color-risk-medium-text);
+  --color-risk-high: var(--color-risk-high);
+  --color-risk-high-bg: var(--color-risk-high-bg);
+  --color-risk-high-text: var(--color-risk-high-text);
+
+  --color-status-approved: var(--color-status-approved);
+  --color-status-approved-bg: var(--color-status-approved-bg);
+  --color-status-approved-text: var(--color-status-approved-text);
+  --color-status-rejected: var(--color-status-rejected);
+  --color-status-rejected-bg: var(--color-status-rejected-bg);
+  --color-status-rejected-text: var(--color-status-rejected-text);
+  --color-status-pending: var(--color-status-pending);
+  --color-status-pending-bg: var(--color-status-pending-bg);
+  --color-status-pending-text: var(--color-status-pending-text);
+
+  --font-heading: var(--font-heading);
+  --font-body: var(--font-body);
+}
+
+/* ✅ Only reset box-sizing globally */
 *,
 *::before,
 *::after {
   box-sizing: border-box;
+}
+
+/* ✅ Only reset margin/padding on public pages */
+.public-layout *,
+.public-layout *::before,
+.public-layout *::after {
   margin: 0;
   padding: 0;
 }
@@ -45,27 +259,68 @@ body {
   font-family: var(--font-body);
   font-size: 16px;
   line-height: 1.6;
-  color: var(--color-secondary-800);
-  background: #fff;
+  background-color: var(--color-brand-navy);
+  color: var(--color-neutral-50);
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--color-neutral-50);
 }
 
 img {
   max-width: 100%;
   display: block;
 }
+
 a {
   text-decoration: none;
   color: inherit;
 }
+
 ul {
   list-style: none;
 }
+
 button {
   cursor: pointer;
   font-family: var(--font-body);
   border: none;
   outline: none;
+}
+
+input,
+textarea,
+select {
+  font-family: var(--font-body);
+}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-surface-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-secondary-700);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-secondary-600);
 }
 
 /* ===== CONTAINER ===== */
@@ -82,6 +337,7 @@ button {
   }
 }
 
+/* ===== ANIMATIONS ===== */
 @keyframes pulse {
   0%,
   100% {
@@ -92,84 +348,167 @@ button {
   }
 }
 
-/* ===== DASHBOARD LAYOUT ===== */
-
-.dashboard-container {
-  display: flex;
-  height: 100vh;
-  background: #f9fafb;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.dashboard-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
+.animate-fade-in {
+  animation: fadeIn 0.3s ease forwards;
 }
 
-.dashboard-content main {
-  flex: 1;
-  padding: 2rem;
-  overflow-y: auto;
-  background: #fff;
+/* ===== BASE LAYER ===== */
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
 }
 
-.dashboard-sidebar {
-  position: static;
-  left: auto;
-  transition: left 0.3s ease;
-}
-
-.sidebar-toggle {
-  display: none;
-}
-
-.topbar-search {
-  max-width: 340px;
-}
-
-.sidebar-overlay {
-  display: none;
-}
-
-/* Responsive: On small screens, hide sidebar and adjust */
-@media (max-width: 768px) {
-  .dashboard-container {
-    flex-direction: column;
+/* ===== UTILITY CLASSES ===== */
+@layer utilities {
+  /* ── Surfaces ── */
+  .surface-primary {
+    background-color: var(--color-surface-primary);
+  }
+  .surface-secondary {
+    background-color: var(--color-surface-secondary);
+  }
+  .surface-card {
+    background-color: var(--color-surface-card);
   }
 
-  .dashboard-sidebar {
-    position: fixed;
-    left: -220px;
-    top: 0;
-    height: 100vh;
-    z-index: 1000;
+  /* ── Typography ── */
+  .text-heading {
+    font-family: var(--font-heading);
+  }
+  .text-body {
+    font-family: var(--font-body);
+  }
+  .text-muted {
+    color: var(--color-secondary-400);
+  }
+  .text-subtle {
+    color: var(--color-secondary-500);
   }
 
-  .dashboard-sidebar.open {
-    left: 0;
+  /* ── Borders ── */
+  .border-dark {
+    border-color: var(--color-dark-border);
+  }
+  .border-subtle {
+    border-color: var(--color-secondary-700);
   }
 
-  .sidebar-overlay.open {
-    display: block;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 999;
+  /* ── Cards ── */
+  .stat-card {
+    border: none;
+    border-radius: 0.75rem;
   }
 
-  .sidebar-toggle {
-    display: block;
+  .charts-card {
+    background-color: #061546;
+    border: none;
+    border-radius: 20px;
   }
 
-  .topbar-search {
-    max-width: none;
+  .card-base {
+    background-color: var(--color-surface-card);
+    border: 1px solid var(--color-dark-border);
+    box-shadow:
+      0 1px 3px 0 rgb(0 0 0 / 0.4),
+      0 1px 2px -1px rgb(0 0 0 / 0.4);
   }
 
-  .dashboard-content main {
-    padding: 1rem;
+  .card-hover {
+    transition:
+      box-shadow 200ms ease,
+      background-color 200ms ease;
+  }
+
+  .card-hover:hover {
+    background-color: var(--color-surface-hover);
+    box-shadow:
+      0 4px 6px -1px rgb(0 0 0 / 0.4),
+      0 2px 4px -2px rgb(0 0 0 / 0.4);
+  }
+
+  /* Risk Badges & Decision Badges */
+  .badge-low-risk,
+  .badge-medium-risk,
+  .badge-high-risk,
+  .badge-approved,
+  .badge-rejected,
+  .badge-pending {
+    width: 125px;
+    border-radius: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.75rem;
+    padding: 0.125rem 0.625rem;
+  }
+
+  .badge-low-risk,
+  .badge-approved {
+    background-color: var(--color-risk-low);
+    color: white;
+  }
+
+  .badge-medium-risk {
+    background-color: var(--color-risk-medium);
+    color: var(--color-primary-11);
+  }
+
+  .badge-high-risk,
+  .badge-rejected {
+    background-color: var(--color-risk-high);
+    color: white;
+  }
+
+  .badge-approved,
+  .badge-rejected {
+    border-radius: 10px;
+  }
+
+  /* ── Decision Badges ── */
+
+  .badge-pending {
+    background-color: var(--color-status-pending-bg);
+    color: var(--color-status-pending-text);
+    border-radius: 9999px;
+    padding: 0.125rem 0.625rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  /* ── Layout ── */
+  .dashboard-grid {
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* ── Transitions ── */
+  .transition-fast {
+    transition: all 150ms ease;
+  }
+  .transition-base {
+    transition: all 200ms ease;
+  }
+  .transition-slow {
+    transition: all 300ms ease;
   }
 }

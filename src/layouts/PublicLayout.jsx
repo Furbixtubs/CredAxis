@@ -9,7 +9,7 @@ export default function PublicLayout() {
       style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
     >
       <Navbars />
-      <main style={{ flex: 1 }}>
+      <main style={{ flex: 1 }} className="public-layout">
         <Outlet />
       </main>
       <Footer />
