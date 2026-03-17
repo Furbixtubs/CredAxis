@@ -23,9 +23,9 @@ import {
   Blocks,
   ChevronDown,
 } from "lucide-react";
+import { useIsMobile } from "../../hooks/use-mobile";
 import { useAuth } from "../../features/auth/authContext";
 import logo from "../../assets/CredAxis_logo.png";
-
 const navItems = [
   {
     label: "Dashboard",
@@ -37,7 +37,7 @@ const navItems = [
     label: "Borrowers",
     icon: Users,
     children: [
-      { label: "Add borrower", to: "/dashboard/borrowers/add" },
+      { label: "Add borrower", to: "/dashboard/add-borrower" },
       { label: "Risk score", to: "/dashboard/borrowers/risk-score" },
       { label: "Risk band", to: "/dashboard/borrowers/risk-band" },
       { label: "Financial signals", to: "/dashboard/borrowers/financial" },
@@ -86,6 +86,7 @@ function NavItem({ item }) {
   const itemRef = useRef(null);
   const dropdownRef = useRef(null);
   const hasChildren = item.children && item.children.length > 0;
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     if (!open) return;
@@ -166,9 +167,9 @@ function NavItem({ item }) {
           className="shrink-0 text-white"
         />
         <span className="flex-1 truncate text-left">{item.label}</span>
-        {/* Small filled dark chevron */}
+        {/* Chevron - rotate on mobile when open */}
         <span
-          className="ml-1 shrink-0"
+          className={`ml-1 shrink-0 transition-transform duration-200 ${open && isMobile ? "rotate-180" : ""}`}
           style={{
             width: 0,
             height: 0,
@@ -180,8 +181,32 @@ function NavItem({ item }) {
         />
       </button>
 
-      {/* Portal — renders directly into <body>, escapes ALL stacking contexts */}
-      {open &&
+      {/* Mobile: Expandable section within sidebar */}
+      {isMobile && open && (
+        <div className="mr-4 ml-12 border-l-2 border-white/20 pl-4">
+          {item.children.map((child) => (
+            <NavLink
+              key={child.to}
+              to={child.to}
+              onClick={() => setOpen(false)}
+              style={{ textDecoration: "none" }}
+              className={({ isActive }) =>
+                `flex items-center rounded-md px-3 py-2 text-sm font-medium transition-colors duration-100 ${
+                  isActive
+                    ? "bg-white/10 text-emerald-300"
+                    : "text-white/80 hover:bg-white/5 hover:text-white"
+                }`
+              }
+            >
+              {child.label}
+            </NavLink>
+          ))}
+        </div>
+      )}
+
+      {/* Desktop: Portal dropdown */}
+      {!isMobile &&
+        open &&
         createPortal(
           <div
             ref={dropdownRef}
@@ -231,6 +256,7 @@ function CredAxisLogo() {
 export default function Sidebar() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
 
   const handleLogout = () => {
     logout();
@@ -240,7 +266,11 @@ export default function Sidebar() {
   return (
     <aside
       className="sticky top-0 flex h-screen shrink-0 flex-col"
-      style={{ width: "17rem", backgroundColor: "#1535d0" }}
+      style={{
+        width: isMobile ? "100%" : "17rem",
+        backgroundColor: "#1535d0",
+        maxWidth: isMobile ? "100vw" : "17rem",
+      }}
     >
       {/* Logo */}
       <div className="flex items-center gap-3 px-5 pt-6 pb-8">

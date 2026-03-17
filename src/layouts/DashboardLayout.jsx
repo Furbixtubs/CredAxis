@@ -49,9 +49,11 @@ export default function DashboardLayout() {
 
         {/* Main content*/}
         <div className="flex min-w-0 flex-1 flex-col bg-linear-to-br from-[#061546] via-[#0B298C] to-sky-500">
-          <Topbar title={title} onMenuClick={() => setSidebarOpen(!sidebarOpen)} />
+          {pathname !== "/dashboard/add-borrower" && (
+            <Topbar title={title} onMenuClick={() => setSidebarOpen(!sidebarOpen)} />
+          )}
 
-          <main className="mt-4 flex-1 overflow-auto p-4 md:p-6">
+          <main className={`flex-1 overflow-auto p-4 md:p-6 ${pathname === "/dashboard/add-borrower" ? "" : "mt-4"}`}>
             <Outlet />
           </main>
         </div>
