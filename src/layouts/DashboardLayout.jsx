@@ -32,15 +32,24 @@ export default function DashboardLayout() {
   return (
     <DashboardProvider>
       <div className="flex min-h-screen">
+        {/* Sidebar */}
         <div
-          className={`fixed inset-y-0 left-0 z-30 transition-transform duration-300 ease-in-out md:static md:z-auto md:translate-x-0 ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} `}
+          className={`fixed inset-y-0 left-0 z-40 transition-transform duration-300 ease-in-out md:static md:z-auto md:translate-x-0 ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} `}
         >
-          <Sidebar />
+          <Sidebar onClose={() => setSidebarOpen(false)} />
         </div>
+
+        {/* Overlay for mobile */}
+        {sidebarOpen && (
+          <div
+            className="fixed inset-0 z-30 bg-black/50 md:hidden"
+            onClick={() => setSidebarOpen(false)}
+          />
+        )}
 
         {/* Main content*/}
         <div className="flex min-w-0 flex-1 flex-col bg-linear-to-br from-[#061546] via-[#0B298C] to-sky-500">
-          <Topbar title={title} />
+          <Topbar title={title} onMenuClick={() => setSidebarOpen(!sidebarOpen)} />
 
           <main className="mt-4 flex-1 overflow-auto p-4 md:p-6">
             <Outlet />

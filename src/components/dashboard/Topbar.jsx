@@ -1,5 +1,5 @@
 // src/components/dashboard/Topbar.jsx
-import { Bell, Search } from "lucide-react";
+import { Bell, Search, Menu } from "lucide-react";
 import { Input } from "../ui/input";
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import { useAuth } from "../../features/auth/authContext";
@@ -14,17 +14,26 @@ function getInitials(name = "") {
     .slice(0, 2);
 }
 
-export default function Topbar({ title = "Dashboard" }) {
+export default function Topbar({ title = "Dashboard", onMenuClick }) {
   const { user } = useAuth();
 
   const { searchQuery, setSearchQuery } = useDashboard();
 
   return (
     <header className="bg-surface-card sticky top-5 z-10 mx-4 flex h-20 shrink-0 items-center justify-between rounded-lg px-6">
-      {/* Page title */}
-      <h2 className="font-heading text-2xl font-semibold text-white md:text-3xl">
-        {title}
-      </h2>
+      {/* Left side - Menu button + Title */}
+      <div className="flex items-center gap-4">
+        <button
+          onClick={onMenuClick}
+          className="text-secondary-400 hover:text-neutral-50 transition-fast md:hidden"
+          aria-label="Toggle sidebar"
+        >
+          <Menu size={24} />
+        </button>
+        <h2 className="font-heading text-2xl font-semibold text-white md:text-3xl">
+          {title}
+        </h2>
+      </div>
 
       {/* Right side */}
       <div className="flex items-center gap-2 md:gap-1.5 lg:gap-3">

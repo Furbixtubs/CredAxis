@@ -1,19 +1,30 @@
 // src/components/dashboard/Sidebar.jsx
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { NavLink, useNavigate } from "react-router";
 import {
   LayoutDashboard,
   Users,
   CreditCard,
   BarChart3,
-  Link2,
   Settings,
   LogOut,
-  ChevronDown,
-  ChevronRight,
   Activity,
+  FileText,
+  ShieldCheck,
+  UserPlus,
+  TrendingUp,
+  ClipboardList,
+  Globe,
+  Lock,
+  Receipt,
+  UsersRound,
+  Sliders,
+  Blocks,
+  ChevronDown,
 } from "lucide-react";
 import { useAuth } from "../../features/auth/authContext";
+import logo from "../../assets/CredAxis_logo.png";
 
 const navItems = [
   {
@@ -26,17 +37,23 @@ const navItems = [
     label: "Borrowers",
     icon: Users,
     children: [
-      { label: "All Borrowers", to: "/dashboard/borrowers" },
-      { label: "Borrower Details", to: "/dashboard/borrowers/details" },
+      { label: "Add borrower", to: "/dashboard/borrowers/add" },
+      { label: "Risk score", to: "/dashboard/borrowers/risk-score" },
+      { label: "Risk band", to: "/dashboard/borrowers/risk-band" },
+      { label: "Financial signals", to: "/dashboard/borrowers/financial" },
     ],
   },
   {
     label: "Credit Decision",
     icon: CreditCard,
-    children: [{ label: "Credit Models", to: "/dashboard/credit-models" }],
+    children: [
+      { label: "Credit Models", to: "/dashboard/credit-models" },
+      { label: "Score History", to: "/dashboard/credit-models/history" },
+      { label: "Policy Rules", to: "/dashboard/credit-models/rules" },
+    ],
   },
   {
-    label: "Portfolio Monitoring",
+    label: "Portfolio monitoring",
     icon: BarChart3,
     children: [
       { label: "Risk Analysis", to: "/dashboard/risk-analysis" },
@@ -46,12 +63,10 @@ const navItems = [
   {
     label: "Blockchain Logs",
     icon: Activity,
-    children: [{ label: "Transactions", to: "/dashboard/transactions" }],
-  },
-  {
-    label: "Integrations",
-    icon: Link2,
-    to: "/dashboard/integrations",
+    children: [
+      { label: "Transactions", to: "/dashboard/transactions" },
+      { label: "Audit Trail", to: "/dashboard/transactions/audit" },
+    ],
   },
   {
     label: "Settings",
@@ -66,60 +81,150 @@ const navItems = [
 ];
 
 function NavItem({ item }) {
-  // const navigate = useNavigation();
   const [open, setOpen] = useState(false);
+  const [dropdownPos, setDropdownPos] = useState({ top: 0, left: 0 });
+  const itemRef = useRef(null);
+  const dropdownRef = useRef(null);
   const hasChildren = item.children && item.children.length > 0;
+
+  useEffect(() => {
+    if (!open) return;
+    const handleClickOutside = (e) => {
+      if (
+        itemRef.current &&
+        !itemRef.current.contains(e.target) &&
+        dropdownRef.current &&
+        !dropdownRef.current.contains(e.target)
+      ) {
+        setOpen(false);
+      }
+    };
+    // Also close on scroll so dropdown doesn't drift from its anchor
+    const handleScroll = () => setOpen(false);
+
+    document.addEventListener("mousedown", handleClickOutside);
+    window.addEventListener("scroll", handleScroll, true);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      window.removeEventListener("scroll", handleScroll, true);
+    };
+  }, [open]);
+
+  const handleToggle = () => {
+    if (!open && itemRef.current) {
+      const rect = itemRef.current.getBoundingClientRect();
+      setDropdownPos({
+        top: rect.top,
+        left: rect.right + 8, // 8px gap from sidebar edge
+      });
+    }
+    setOpen((prev) => !prev);
+  };
 
   if (!hasChildren) {
     return (
       <NavLink
         to={item.to}
         end={item.exact}
+        style={{ textDecoration: "none" }}
         className={({ isActive }) =>
-          `sidebar-nav-item ${isActive ? "active" : ""}`
+          `relative flex items-center gap-4 px-6 py-4 text-[17px] font-semibold transition-colors duration-150 ${
+            isActive ? "text-emerald-400" : "text-white hover:text-emerald-300"
+          }`
         }
       >
-        <item.icon size={16} className="shrink-0" />
-        <span className="flex-1">{item.label}</span>
+        {({ isActive }) => (
+          <>
+            {isActive && (
+              <span
+                className="absolute top-1/2 right-0 -translate-y-1/2 rounded-l-full bg-yellow-400"
+                style={{ width: 5, height: 36 }}
+              />
+            )}
+            <item.icon
+              size={28}
+              strokeWidth={1.6}
+              className={`shrink-0 ${isActive ? "text-emerald-400" : "text-white"}`}
+            />
+            <span className="truncate">{item.label}</span>
+          </>
+        )}
       </NavLink>
     );
   }
 
   return (
-    <div>
+    <div ref={itemRef}>
       <button
-        onClick={() => setOpen((prev) => !prev)}
-        className="sidebar-nav-item w-full"
+        onClick={handleToggle}
+        className="flex w-full items-center gap-4 px-6 py-4 text-[17px] font-semibold text-white transition-colors duration-150 hover:text-emerald-300"
+        style={{ background: "none", border: "none" }}
       >
-        <item.icon size={16} className="shrink-0" />
-        <span className="flex-1 text-left">{item.label}</span>
-        {open ? (
-          <ChevronDown size={13} className="shrink-0 opacity-50" />
-        ) : (
-          <ChevronRight size={13} className="shrink-0 opacity-50" />
-        )}
+        <item.icon
+          size={28}
+          strokeWidth={1.6}
+          className="shrink-0 text-white"
+        />
+        <span className="flex-1 truncate text-left">{item.label}</span>
+        {/* Small filled dark chevron */}
+        <span
+          className="ml-1 shrink-0"
+          style={{
+            width: 0,
+            height: 0,
+            borderLeft: "5px solid transparent",
+            borderRight: "5px solid transparent",
+            borderTop: "7px solid #ffffff",
+            display: "inline-block",
+          }}
+        />
       </button>
 
-      {open && (
-        <div className="border-dark-border mt-0.5 ml-7 flex flex-col gap-0.5 border-l pl-3">
-          {item.children.map((child) => (
-            <NavLink
-              key={child.to}
-              to={child.to}
-              className={({ isActive }) =>
-                `transition-fast rounded-md px-2 py-1.5 text-xs ${
-                  isActive
-                    ? "text-brand-teal font-medium"
-                    : "text-secondary-400 hover:text-neutral-50"
-                }`
-              }
-            >
-              {child.label}
-            </NavLink>
-          ))}
-        </div>
-      )}
+      {/* Portal — renders directly into <body>, escapes ALL stacking contexts */}
+      {open &&
+        createPortal(
+          <div
+            ref={dropdownRef}
+            className="overflow-hidden bg-white shadow-2xl"
+            style={{
+              position: "fixed",
+              zIndex: 9999,
+              top: dropdownPos.top,
+              left: dropdownPos.left,
+              minWidth: 190,
+            }}
+          >
+            {item.children.map((child) => (
+              <NavLink
+                key={child.to}
+                to={child.to}
+                onClick={() => setOpen(false)}
+                style={{ textDecoration: "none" }}
+                className={({ isActive }) =>
+                  `flex items-center px-5 py-3 text-[13.5px] font-medium transition-colors duration-100 ${
+                    isActive
+                      ? "bg-[#c5cce8] text-[#1a2060]"
+                      : "text-[#1a2060] hover:bg-[#eef0f8] hover:text-white"
+                  }`
+                }
+              >
+                {child.label}
+              </NavLink>
+            ))}
+          </div>,
+          document.body,
+        )}
     </div>
+  );
+}
+
+function CredAxisLogo() {
+  return (
+    <img
+      src={logo}
+      alt="CredAxis logo"
+      style={{ width: "56px", height: "56px" }}
+    />
   );
 }
 
@@ -133,8 +238,39 @@ export default function Sidebar() {
   };
 
   return (
-    <aside className="bg-primary-08 border-dark-border text-white sticky top-0 flex h-screen w-full min-w-[16rem] shrink-0 flex-col gap-12 border-r">
-      <h1 className="flex items-center justify-center p-4">CredAxis</h1>
+    <aside
+      className="sticky top-0 flex h-screen shrink-0 flex-col"
+      style={{ width: "17rem", backgroundColor: "#1535d0" }}
+    >
+      {/* Logo */}
+      <div className="flex items-center gap-3 px-5 pt-6 pb-8">
+        <CredAxisLogo />
+        <span
+          className="truncate text-xl font-bold tracking-tight text-white"
+          style={{ fontFamily: "'Poppins', sans-serif" }}
+        >
+          CredAxis
+        </span>
+      </div>
+
+      {/* Nav items */}
+      <nav className="flex flex-1 flex-col gap-0.5 overflow-y-auto">
+        {navItems.map((item) => (
+          <NavItem key={item.label} item={item} />
+        ))}
+      </nav>
+
+      {/* Logout */}
+      <div className="pt-2 pb-6">
+        <button
+          onClick={handleLogout}
+          className="flex w-full items-center gap-4 px-6 py-4 text-[17px] font-semibold text-white transition-colors hover:text-red-400"
+          style={{ background: "none", border: "none" }}
+        >
+          <LogOut size={28} strokeWidth={1.6} className="shrink-0" />
+          <span className="truncate">Logout</span>
+        </button>
+      </div>
     </aside>
   );
 }
