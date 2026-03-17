@@ -5,6 +5,7 @@ import PublicLayout from "../layouts/PublicLayout";
 import DashboardLayout from "../layouts/DashboardLayout";
 import SettingsLayout from "../layouts/SettingsLayout";
 import ProtectedRoute from "../features/auth/ProtectedRoute";
+import { action as addBorrowerAction } from "../pages/dashboard/add-borrower/AddBorrower";
 
 // ── Loading fallback ──────────────────────────────────────────────────────────
 function Loader() {
@@ -58,6 +59,9 @@ const Integrations = lazy(
   () => import("../pages/dashboard/integrations/Integrations"),
 );
 const Profile = lazy(() => import("../pages/dashboard/profile/Profile"));
+const ApprovedBorrowerScoring = lazy(
+  () => import("../pages/dashboard/borrower-scoring/ApprovedBorrowerScoring"),
+);
 
 // Settings sub-pages
 const SettingsGeneral = lazy(
@@ -103,7 +107,7 @@ export const router = createBrowserRouter([
     ),
     children: [
       { index: true, element: wrap(Overview) },
-      { path: "add-borrower", element: wrap(AddBorrower) },
+      { path: "add-borrower", element: wrap(AddBorrower), action: addBorrowerAction },
       { path: "borrowers", element: wrap(Borrowers) },
       { path: "borrowers/:id", element: wrap(BorrowerDetails) },
       { path: "lenders", element: wrap(Lenders) },
@@ -113,6 +117,7 @@ export const router = createBrowserRouter([
       { path: "reports", element: wrap(Reports) },
       { path: "integrations", element: wrap(Integrations) },
       { path: "profile", element: wrap(Profile) },
+      { path: "borrower-scoring", element: wrap(ApprovedBorrowerScoring) },
 
       // Settings with nested tab layout
       {

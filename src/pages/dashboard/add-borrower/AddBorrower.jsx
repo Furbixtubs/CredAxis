@@ -31,8 +31,8 @@ export async function action({ request }) {
   // TODO: replace with your real API call
   // await createBorrower({ name, phone, bvn });
 
-  // Redirect to success page (or borrowers list)
-  return redirect("/dashboard/borrowers/add?success=true");
+  // Redirect to borrower scoring/approval page
+  return redirect("/dashboard/borrower-scoring");
 }
 
 // ─── Component ────────────────────────────────────────────────────────────────
