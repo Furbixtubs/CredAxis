@@ -25,7 +25,7 @@ export default function Topbar({ title = "Dashboard", onMenuClick }) {
       <div className="flex items-center gap-4">
         <button
           onClick={onMenuClick}
-          className="text-secondary-400 hover:text-neutral-50 transition-fast md:hidden"
+          className="text-secondary-400 transition-fast hover:text-neutral-50 md:hidden"
           aria-label="Toggle sidebar"
         >
           <Menu size={24} />

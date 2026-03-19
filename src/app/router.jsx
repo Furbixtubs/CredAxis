@@ -107,7 +107,11 @@ export const router = createBrowserRouter([
     ),
     children: [
       { index: true, element: wrap(Overview) },
-      { path: "add-borrower", element: wrap(AddBorrower), action: addBorrowerAction },
+      {
+        path: "add-borrower",
+        element: wrap(AddBorrower),
+        action: addBorrowerAction,
+      },
       { path: "borrowers", element: wrap(Borrowers) },
       { path: "borrowers/:id", element: wrap(BorrowerDetails) },
       { path: "lenders", element: wrap(Lenders) },
