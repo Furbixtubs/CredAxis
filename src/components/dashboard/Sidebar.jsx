@@ -37,45 +37,45 @@ const navItems = [
     label: "Borrowers",
     icon: Users,
     children: [
+      { label: "Borrower's Profile", to: "/dashboard/borrowers" },
       { label: "Add borrower", to: "/dashboard/add-borrower" },
-      { label: "Risk score", to: "/dashboard/borrowers/risk-score" },
-      { label: "Risk band", to: "/dashboard/borrowers/risk-band" },
-      { label: "Financial signals", to: "/dashboard/borrowers/financial" },
     ],
   },
-  {
-    label: "Credit Decision",
-    icon: CreditCard,
-    children: [
-      { label: "Credit Models", to: "/dashboard/credit-models" },
-      { label: "Score History", to: "/dashboard/credit-models/history" },
-      { label: "Policy Rules", to: "/dashboard/credit-models/rules" },
-    ],
-  },
+  // {
+  //   label: "Credit Decision",
+  //   icon: CreditCard,
+  //   children: [
+  //     { label: "Credit Models", to: "/dashboard/credit-models" },
+  //     { label: "Score History", to: "/dashboard/credit-models/history" },
+  //     { label: "Policy Rules", to: "/dashboard/credit-models/rules" },
+  //   ],
+  // },
   {
     label: "Portfolio monitoring",
     icon: BarChart3,
-    children: [
-      { label: "Risk Analysis", to: "/dashboard/risk-analysis" },
-      { label: "Reports", to: "/dashboard/reports" },
-    ],
+    to: "/dashboard/portfolio",
+    // children: [
+    //   { label: "Risk Analysis", to: "/dashboard/risk-analysis" },
+    //   { label: "Reports", to: "/dashboard/reports" },
+    // ],
   },
   {
     label: "Blockchain Logs",
     icon: Activity,
-    children: [
-      { label: "Transactions", to: "/dashboard/transactions" },
-      { label: "Audit Trail", to: "/dashboard/transactions/audit" },
-    ],
+    to: "/dashboard/blockchain-logs",
+    // children: [
+    //   { label: "Transactions", to: "/dashboard/transactions" },
+    //   { label: "Audit Trail", to: "/dashboard/transactions/audit" },
+    // ],
   },
   {
     label: "Settings",
     icon: Settings,
     children: [
-      { label: "General", to: "/dashboard/settings" },
-      { label: "Security", to: "/dashboard/settings/security" },
-      { label: "Billing", to: "/dashboard/settings/billing" },
-      { label: "Team", to: "/dashboard/settings/team" },
+      { label: "Profile", to: "/dashboard/profile" },
+      // { label: "Security", to: "/dashboard/settings/security" },
+      // { label: "Billing", to: "/dashboard/settings/billing" },
+      // { label: "Team", to: "/dashboard/settings/team" },
     ],
   },
 ];

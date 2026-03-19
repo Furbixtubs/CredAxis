@@ -50,7 +50,8 @@ export default function DashboardLayout() {
         {/* Main content*/}
         <div className="flex min-w-0 flex-1 flex-col bg-linear-to-br from-[#061546] via-[#0B298C] to-sky-500">
           {pathname !== "/dashboard/add-borrower" &&
-            pathname !== "/dashboard/borrower-scoring" && (
+            pathname !== "/dashboard/borrower-scoring" &&
+            pathname !== "/dashboard/profile" && (
               <Topbar
                 title={title}
                 onMenuClick={() => setSidebarOpen(!sidebarOpen)}
@@ -58,7 +59,13 @@ export default function DashboardLayout() {
             )}
 
           <main
-            className={`flex-1 overflow-auto p-4 md:p-6 ${pathname === "/dashboard/add-borrower" || pathname === "/dashboard/borrower-scoring" ? "" : "mt-4"}`}
+            className={`flex-1 overflow-auto p-4 md:p-6 ${
+              pathname === "/dashboard/add-borrower" ||
+              pathname === "/dashboard/borrower-scoring" ||
+              pathname === "/dashboard/profile"
+                ? ""
+                : "mt-4"
+            }`}
           >
             <Outlet />
           </main>

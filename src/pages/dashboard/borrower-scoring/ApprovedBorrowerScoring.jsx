@@ -567,7 +567,7 @@ export default function ApprovedBorrowerScoring() {
                 Go to Dashboard
               </button>
             </Link>
-
+            {/* For the button "back", linked to the Addborrowers page */}
             {/* <button type="button" className="abs-back">
                 ← Back
               </button> */}
