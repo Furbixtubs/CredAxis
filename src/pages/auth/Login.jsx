@@ -69,14 +69,6 @@ export default function Login() {
                 />
               </div>
 
-              {/* Staff ID */}
-              <div className="form-group">
-                <label htmlFor="staffId" className="form-label">
-                  Staff ID
-                </label>
-                <input id="staffId" type="text" className="form-input" />
-              </div>
-
               {/* Password */}
               <div className="form-group form-group--last">
                 <label htmlFor="password" className="form-label">

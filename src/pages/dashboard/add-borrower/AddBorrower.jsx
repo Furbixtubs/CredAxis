@@ -31,8 +31,12 @@ export async function action({ request }) {
   // TODO: replace with your real API call
   // await createBorrower({ name, phone, bvn });
 
-  // Redirect to borrower scoring/approval page
-  return redirect("/dashboard/borrower-scoring");
+  // Redirect to borrower scoring/approval page with form data in query params
+  const redirectUrl = new URL("/dashboard/borrower-scoring", "http://localhost");
+  redirectUrl.searchParams.set("name", name);
+  redirectUrl.searchParams.set("phone", phone);
+
+  return redirect(redirectUrl.pathname + redirectUrl.search);
 }
 
 // ─── Component ────────────────────────────────────────────────────────────────

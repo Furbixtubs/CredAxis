@@ -41,15 +41,21 @@ const navItems = [
       { label: "Add borrower", to: "/dashboard/add-borrower" },
     ],
   },
-  // {
-  //   label: "Credit Decision",
-  //   icon: CreditCard,
-  //   children: [
-  //     { label: "Credit Models", to: "/dashboard/credit-models" },
-  //     { label: "Score History", to: "/dashboard/credit-models/history" },
-  //     { label: "Policy Rules", to: "/dashboard/credit-models/rules" },
-  //   ],
-  // },
+  {
+    label: "Credit Decision",
+    icon: CreditCard,
+    children: [
+      // { label: "Credit Models", to: "/dashboard/credit-models" },
+      {
+        label: "Approved Loans",
+        to: "/dashboard/approved-loans",
+      },
+      {
+        label: "Rejected Loans",
+        to: "/dashboard/rejected-loans",
+      },
+    ],
+  },
   {
     label: "Portfolio monitoring",
     icon: BarChart3,

@@ -45,14 +45,17 @@ const BorrowerDetails = lazy(
   () => import("../pages/dashboard/borrowers/BorrowerDetails"),
 );
 const Lenders = lazy(() => import("../pages/dashboard/lenders/Lenders"));
-const CreditModels = lazy(
-  () => import("../pages/dashboard/credit-models/CreditModels"),
+const ApprovedModels = lazy(
+  () => import("../pages/dashboard/credit-models/ApprovedLoans"),
+);
+const RejectedModels = lazy(
+  () => import("../pages/dashboard/credit-models/RejectedLoans"),
 );
 const RiskAnalysis = lazy(
   () => import("../pages/dashboard/risk-analysis/RiskAnalysis"),
 );
-const Transactions = lazy(
-  () => import("../pages/dashboard/transactions/Transactions"),
+const BlockchainLogs = lazy(
+  () => import("../pages/dashboard/blockchainlogs/BlockchainLogs"),
 );
 const Reports = lazy(() => import("../pages/dashboard/reports/Reports"));
 const Integrations = lazy(
@@ -115,12 +118,14 @@ export const router = createBrowserRouter([
       { path: "borrowers", element: wrap(Borrowers) },
       { path: "borrowers/:id", element: wrap(BorrowerDetails) },
       { path: "lenders", element: wrap(Lenders) },
-      { path: "credit-models", element: wrap(CreditModels) },
+      { path: "approved-loans", element: wrap(ApprovedModels) },
+      { path: "rejected-loans", element: wrap(RejectedModels) },
       { path: "risk-analysis", element: wrap(RiskAnalysis) },
-      { path: "transactions", element: wrap(Transactions) },
+      { path: "blockchain-logs", element: wrap(BlockchainLogs) },
       { path: "reports", element: wrap(Reports) },
       { path: "integrations", element: wrap(Integrations) },
       { path: "profile", element: wrap(Profile) },
+      // { path: "borrowers/:id", element: wrap(BorrowerDetails) },
       { path: "borrower-scoring", element: wrap(ApprovedBorrowerScoring) },
 
       // Settings with nested tab layout

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useSearchParams } from "react-router";
 import {
   PieChart,
   Pie,
@@ -555,6 +555,10 @@ export default function ApprovedBorrowerScoring() {
   const [showApproved, setShowApproved] = useState(false);
   const [showRejected, setShowRejected] = useState(false);
 
+  const [searchParams] = useSearchParams();
+  const customerName = searchParams.get("name") || "John Okafor";
+  const customerPhone = searchParams.get("phone") || "+2348036782727";
+
   return (
     <>
       <style>{S}</style>
@@ -577,7 +581,7 @@ export default function ApprovedBorrowerScoring() {
             <div className="abs-header-cols">
               <div className="abs-hrow">
                 <span className="abs-hlbl">Customer Name:</span>
-                <span className="abs-hval">John Okafor</span>
+                <span className="abs-hval">{customerName}</span>
               </div>
               <div className="abs-hrow">
                 <span className="abs-hlbl">Customer ID:</span>
@@ -585,7 +589,7 @@ export default function ApprovedBorrowerScoring() {
               </div>
               <div className="abs-hrow">
                 <span className="abs-hlbl">Phone Number:</span>
-                <span className="abs-hval">+2348036782727</span>
+                <span className="abs-hval">{customerPhone}</span>
               </div>
               <div className="abs-hrow">
                 <span className="abs-hlbl">Application Date:</span>
