@@ -59,7 +59,7 @@ const navItems = [
   {
     label: "Portfolio monitoring",
     icon: BarChart3,
-    to: "/dashboard/portfolio",
+    to: "/dashboard/portfolio-monitoring",
     // children: [
     //   { label: "Risk Analysis", to: "/dashboard/risk-analysis" },
     //   { label: "Reports", to: "/dashboard/reports" },

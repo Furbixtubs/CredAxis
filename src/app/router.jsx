@@ -58,8 +58,8 @@ const BlockchainLogs = lazy(
   () => import("../pages/dashboard/blockchainlogs/Blockchainlogs"),
 );
 const Reports = lazy(() => import("../pages/dashboard/reports/Reports"));
-const Integrations = lazy(
-  () => import("../pages/dashboard/integrations/Integrations"),
+const PortfolioMonitoring = lazy(
+  () => import("../pages/dashboard/portfolio-monitoring/PortfolioMonitoring"),
 );
 const Profile = lazy(() => import("../pages/dashboard/profile/Profile"));
 const ApprovedBorrowerScoring = lazy(
@@ -123,7 +123,7 @@ export const router = createBrowserRouter([
       { path: "risk-analysis", element: wrap(RiskAnalysis) },
       { path: "blockchain-logs", element: wrap(BlockchainLogs) },
       { path: "reports", element: wrap(Reports) },
-      { path: "integrations", element: wrap(Integrations) },
+      { path: "portfolio-monitoring", element: wrap(PortfolioMonitoring) },
       { path: "profile", element: wrap(Profile) },
       // { path: "borrowers/:id", element: wrap(BorrowerDetails) },
       { path: "borrower-scoring", element: wrap(ApprovedBorrowerScoring) },
