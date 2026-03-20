@@ -3,13 +3,18 @@ import { Link, useLocation, useNavigate } from "react-router";
 import { useAuth } from "../../features/auth/authContext";
 import "./Login.css";
 import logo from "../../assets/CredAxis_logo.png";
+
 export default function Login() {
   const { login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/dashboard";
 
-  const [email, setEmail] = useState("");
+  // Passed from VerifyOTP on successful verification
+  const justVerified = location.state?.verified === true;
+  const verifiedEmail = location.state?.email || "";
+
+  const [email, setEmail] = useState(verifiedEmail);
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -19,7 +24,6 @@ export default function Login() {
     setError(null);
     setLoading(true);
 
-    // Demo: any email + password works — swap with real API call
     try {
       await new Promise((r) => setTimeout(r, 600));
       if (password.length < 4) throw new Error("Invalid email or password.");
@@ -35,7 +39,7 @@ export default function Login() {
   return (
     <div className="login-page">
       <div className="login-container">
-        {/* Logo/Hero */}
+        {/* Logo / Hero */}
         <div className="login-hero">
           <div className="login-brand">
             <img src={logo} alt="CredAxis Logo" className="logo-img" />
@@ -45,6 +49,18 @@ export default function Login() {
           </div>
         </div>
 
+        {/* ── Verified success banner ── */}
+        {justVerified && (
+          <div style={s.successBanner}>
+            <span style={s.successIcon}>✓</span>
+            <span>
+              Account verified! Your email <strong>{verifiedEmail}</strong> is
+              confirmed. Sign in to continue.
+            </span>
+          </div>
+        )}
+
+        {/* ── Error banner ── */}
         {error && <div style={s.error}>{error}</div>}
 
         {/* Form Card */}
@@ -86,15 +102,13 @@ export default function Login() {
                 />
               </div>
 
-              {/* Continue Button */}
               <button type="submit" disabled={loading} className="btn-continue">
                 {loading ? "Signing in…" : "Sign in"}
               </button>
             </form>
 
-            {/* Sign Up Link */}
             <p className="signup-prompt">
-              Don't Have an account?{" "}
+              Don't have an account?{" "}
               <Link to="/signup" className="signup-link">
                 Sign up
               </Link>
@@ -107,6 +121,33 @@ export default function Login() {
 }
 
 const s = {
+  successBanner: {
+    display: "flex",
+    alignItems: "flex-start",
+    gap: "10px",
+    backgroundColor: "#F0FDF4",
+    border: "1px solid #BBF7D0",
+    color: "#065F46",
+    borderRadius: "8px",
+    padding: "12px 16px",
+    fontSize: "13px",
+    lineHeight: 1.5,
+    marginBottom: "16px",
+  },
+  successIcon: {
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "20px",
+    height: "20px",
+    backgroundColor: "#007020",
+    color: "#fff",
+    borderRadius: "50%",
+    fontSize: "11px",
+    fontWeight: 700,
+    flexShrink: 0,
+    marginTop: "1px",
+  },
   error: {
     background: "#fef2f2",
     color: "#dc2626",

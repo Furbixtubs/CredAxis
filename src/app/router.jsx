@@ -34,6 +34,7 @@ const Contact = lazy(() => import("../pages/public/Contact"));
 // ── Auth pages ────────────────────────────────────────────────────────────────
 const Login = lazy(() => import("../pages/auth/Login"));
 const Signup = lazy(() => import("../pages/auth/Signup"));
+const VerifyOTP = lazy(() => import("../pages/auth/VerifyOTP"));
 
 // ── Dashboard pages ───────────────────────────────────────────────────────────
 const Overview = lazy(() => import("../pages/dashboard/overview/Overview"));
@@ -99,6 +100,7 @@ export const router = createBrowserRouter([
   // ── Auth pages (no layout wrapper) ─────────────────────────────────────────
   { path: "/login", element: wrap(Login) },
   { path: "/signup", element: wrap(Signup) },
+  { path: "/verify-otp", element: wrap(VerifyOTP) },
 
   // ── Protected dashboard ─────────────────────────────────────────────────────
   {

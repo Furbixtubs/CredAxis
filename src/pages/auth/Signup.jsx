@@ -4,28 +4,49 @@ import { useAuth } from "../../features/auth/authContext";
 import "./Signup.css";
 
 export default function Signup() {
-  const { login } = useAuth();
   const navigate = useNavigate();
 
   const [name, setName] = useState("");
   const [Lname, setLname] = useState("");
   const [email, setEmail] = useState("");
+  const [gender, setGender] = useState("");
+  const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [terms, setTerms] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   async function handleSubmit(e) {
     e.preventDefault();
+    setError("");
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match.");
+      return;
+    }
+    if (!terms) {
+      setError("You must agree to the Terms of Service.");
+      return;
+    }
+
     setLoading(true);
-    await new Promise((r) => setTimeout(r, 700));
-    login({ name, email, role: "admin" });
-    navigate("/dashboard", { replace: true });
+    // Mock: simulate sending OTP to email
+    await new Promise((r) => setTimeout(r, 800));
+    setLoading(false);
+
+    // Pass email & name to OTP page via router state
+    navigate("/verify-otp", {
+      state: { email, name: `${name} ${Lname}`.trim(), fromSignup: true },
+    });
   }
 
   return (
     <div className="signup-page">
       <div className="signup-container">
         <h2 className="signup-title">Create an account</h2>
+
+        {error && <div style={s.errorBox}>{error}</div>}
 
         <form className="signup-form" onSubmit={handleSubmit}>
           {/* First Name */}
@@ -67,6 +88,7 @@ export default function Signup() {
             <input
               id="workEmail"
               type="email"
+              required
               className="field-input"
               placeholder="Enter work email"
               value={email}
@@ -79,7 +101,12 @@ export default function Signup() {
             <label htmlFor="gender" className="field-label">
               Gender
             </label>
-            <select id="gender" className="field-input field-select">
+            <select
+              id="gender"
+              className="field-input field-select"
+              value={gender}
+              onChange={(e) => setGender(e.target.value)}
+            >
               <option value="">Please select</option>
               <option value="male">Male</option>
               <option value="female">Female</option>
@@ -97,6 +124,8 @@ export default function Signup() {
               type="tel"
               className="field-input"
               placeholder="Enter phone number"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
             />
           </div>
 
@@ -117,19 +146,6 @@ export default function Signup() {
             />
           </div>
 
-          {/* Staff ID — was duplicate phone in original, fixed */}
-          <div className="field-group">
-            <label htmlFor="staffId" className="field-label">
-              Staff ID
-            </label>
-            <input
-              id="staffId"
-              type="text"
-              className="field-input"
-              placeholder="Enter staff ID"
-            />
-          </div>
-
           {/* Confirm Password */}
           <div className="field-group">
             <label htmlFor="confirmPassword" className="field-label">
@@ -147,22 +163,28 @@ export default function Signup() {
             />
           </div>
 
-          {/* Terms Checkbox — full width */}
+          {/* Terms Checkbox */}
           <div className="field-group field-group--full">
             <label className="checkbox-label" htmlFor="terms">
-              <input id="terms" type="checkbox" className="checkbox-input" />I
-              agree to Terms of service
+              <input
+                id="terms"
+                type="checkbox"
+                className="checkbox-input"
+                checked={terms}
+                onChange={(e) => setTerms(e.target.checked)}
+              />
+              I agree to Terms of service
             </label>
           </div>
 
-          {/* Submit — full width */}
+          {/* Submit */}
           <div className="field-group field-group--full">
             <button type="submit" disabled={loading} className="btn-create">
-              {loading ? "Creating account…" : "Create account"}
+              {loading ? "Sending OTP…" : "Create account"}
             </button>
           </div>
 
-          {/* Login link — full width */}
+          {/* Login link */}
           <div className="field-group field-group--full login-redirect">
             <span className="redirect-text">
               Already have an account?{" "}
@@ -176,3 +198,15 @@ export default function Signup() {
     </div>
   );
 }
+
+const s = {
+  errorBox: {
+    backgroundColor: "#FEE2E2",
+    color: "#991B1B",
+    borderRadius: "8px",
+    padding: "10px 14px",
+    fontSize: "13px",
+    marginBottom: "16px",
+    border: "1px solid #FECACA",
+  },
+};
