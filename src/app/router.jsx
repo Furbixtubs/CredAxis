@@ -55,7 +55,7 @@ const RiskAnalysis = lazy(
   () => import("../pages/dashboard/risk-analysis/RiskAnalysis"),
 );
 const BlockchainLogs = lazy(
-  () => import("../pages/dashboard/blockchainlogs/BlockchainLogs"),
+  () => import("../pages/dashboard/blockchainlogs/Blockchainlogs"),
 );
 const Reports = lazy(() => import("../pages/dashboard/reports/Reports"));
 const Integrations = lazy(
@@ -100,7 +100,7 @@ export const router = createBrowserRouter([
   { path: "/login", element: wrap(Login) },
   { path: "/signup", element: wrap(Signup) },
 
-  // ──New Protected dashboard ─────────────────────────────────────────────────────
+  // ── Protected dashboard ─────────────────────────────────────────────────────
   {
     path: "/dashboard",
     element: (
