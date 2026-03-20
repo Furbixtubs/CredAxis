@@ -7,7 +7,7 @@ import SettingsLayout from "../layouts/SettingsLayout";
 import ProtectedRoute from "../features/auth/ProtectedRoute";
 import { action as addBorrowerAction } from "../pages/dashboard/add-borrower/AddBorrower";
 
-// ── Loading fallback ──────────────────────────────────────────────────────────
+// Loading fallback 
 function Loader() {
   return (
     <div style={{ display: "grid", placeItems: "center", height: "60vh" }}>
@@ -24,58 +24,42 @@ function wrap(Component) {
   );
 }
 
-// ── Public pages ──────────────────────────────────────────────────────────────
-const Home = lazy(() => import("../pages/public/Home"));
-const About = lazy(() => import("../pages/public/About"));
-const Features = lazy(() => import("../pages/public/Features"));
+// ── Public pages 
+const Home          = lazy(() => import("../pages/public/Home"));
+const About         = lazy(() => import("../pages/public/About"));
+const Features      = lazy(() => import("../pages/public/Features"));
 const Documentation = lazy(() => import("../pages/public/Documentation"));
-const Contact = lazy(() => import("../pages/public/Contact"));
+const Contact       = lazy(() => import("../pages/public/Contact"));
 
-// ── Auth pages ────────────────────────────────────────────────────────────────
-const Login = lazy(() => import("../pages/auth/Login"));
+// ── Auth pages 
+const Login  = lazy(() => import("../pages/auth/Login"));
 const Signup = lazy(() => import("../pages/auth/Signup"));
 
 // ── Dashboard pages ───────────────────────────────────────────────────────────
-const Overview = lazy(() => import("../pages/dashboard/overview/Overview"));
-const AddBorrower = lazy(
-  () => import("../pages/dashboard/add-borrower/AddBorrower"),
-);
-const Borrowers = lazy(() => import("../pages/dashboard/borrowers/Borrowers"));
-const BorrowerDetails = lazy(
-  () => import("../pages/dashboard/borrowers/BorrowerDetails"),
-);
-const Lenders = lazy(() => import("../pages/dashboard/lenders/Lenders"));
-const CreditModels = lazy(
-  () => import("../pages/dashboard/credit-models/CreditModels"),
-);
-const RiskAnalysis = lazy(
-  () => import("../pages/dashboard/risk-analysis/RiskAnalysis"),
-);
-const Transactions = lazy(
-  () => import("../pages/dashboard/transactions/Transactions"),
-);
-const Reports = lazy(() => import("../pages/dashboard/reports/Reports"));
-const Integrations = lazy(
-  () => import("../pages/dashboard/integrations/Integrations"),
-);
-const Profile = lazy(() => import("../pages/dashboard/profile/Profile"));
-const ApprovedBorrowerScoring = lazy(
-  () => import("../pages/dashboard/borrower-scoring/ApprovedBorrowerScoring"),
-);
+const Overview               = lazy(() => import("../pages/dashboard/overview/Overview"));
+const AddBorrower            = lazy(() => import("../pages/dashboard/add-borrower/AddBorrower"));
+const Borrowers              = lazy(() => import("../pages/dashboard/borrowers/Borrowers"));
+const BorrowerDetails        = lazy(() => import("../pages/dashboard/borrowers/BorrowerDetails"));
+const Lenders                = lazy(() => import("../pages/dashboard/lenders/Lenders"));
+const CreditModels           = lazy(() => import("../pages/dashboard/credit-models/CreditModels"));
+const RiskAnalysis           = lazy(() => import("../pages/dashboard/risk-analysis/RiskAnalysis"));
+const Transactions           = lazy(() => import("../pages/dashboard/transactions/Transactions"));
+const Reports                = lazy(() => import("../pages/dashboard/reports/Reports"));
+const Integrations           = lazy(() => import("../pages/dashboard/integrations/Integrations"));
+const Profile                = lazy(() => import("../pages/dashboard/profile/Profile"));
+const ApprovedBorrowerScoring = lazy(() => import("../pages/dashboard/borrower-scoring/ApprovedBorrowerScoring"));
+const RejectedLoans          = lazy(() => import("../pages/dashboard/RejectedLoans/RejectedLoans"));
+const ApprovedLoans          = lazy(() => import("../pages/dashboard/ApprovedLoans/ApprovedLoans"));
+const BlockchainLogs         = lazy(() => import("../pages/dashboard/Blockchain/Blockchainlogs"));
+const PortfolioMonitoring = lazy(() => import("../pages/dashboard/portfoliomonitorting/PortfolioMonitoring"));
 
-// Settings sub-pages
-const SettingsGeneral = lazy(
-  () => import("../pages/dashboard/settings/General"),
-);
-const SettingsSecurity = lazy(
-  () => import("../pages/dashboard/settings/Security"),
-);
-const SettingsBilling = lazy(
-  () => import("../pages/dashboard/settings/Billing"),
-);
-const SettingsTeam = lazy(() => import("../pages/dashboard/settings/Team"));
+// ── Settings sub-pages ────────────────────────────────────────────────────────
+const SettingsGeneral  = lazy(() => import("../pages/dashboard/settings/General"));
+const SettingsSecurity = lazy(() => import("../pages/dashboard/settings/Security"));
+const SettingsBilling  = lazy(() => import("../pages/dashboard/settings/Billing"));
+const SettingsTeam     = lazy(() => import("../pages/dashboard/settings/Team"));
 
-// 404
+// ── 404 ──────────────────────────────────────────────────────────────────────
 const NotFound = lazy(() => import("../pages/NotFound"));
 
 // ── Router ────────────────────────────────────────────────────────────────────
@@ -86,15 +70,15 @@ export const router = createBrowserRouter([
     element: <PublicLayout />,
     children: [
       { index: true, element: wrap(Home) },
-      { path: "about", element: wrap(About) },
+      { path: "about",    element: wrap(About) },
       { path: "features", element: wrap(Features) },
-      { path: "docs", element: wrap(Documentation) },
-      { path: "contact", element: wrap(Contact) },
+      { path: "docs",     element: wrap(Documentation) },
+      { path: "contact",  element: wrap(Contact) },
     ],
   },
 
-  // ── Auth pages (no layout wrapper) ─────────────────────────────────────────
-  { path: "/login", element: wrap(Login) },
+  // ── Auth pages ──────────────────────────────────────────────────────────────
+  { path: "/login",  element: wrap(Login) },
   { path: "/signup", element: wrap(Signup) },
 
   // ── Protected dashboard ─────────────────────────────────────────────────────
@@ -107,21 +91,21 @@ export const router = createBrowserRouter([
     ),
     children: [
       { index: true, element: wrap(Overview) },
-      {
-        path: "add-borrower",
-        element: wrap(AddBorrower),
-        action: addBorrowerAction,
-      },
-      { path: "borrowers", element: wrap(Borrowers) },
-      { path: "borrowers/:id", element: wrap(BorrowerDetails) },
-      { path: "lenders", element: wrap(Lenders) },
-      { path: "credit-models", element: wrap(CreditModels) },
-      { path: "risk-analysis", element: wrap(RiskAnalysis) },
-      { path: "transactions", element: wrap(Transactions) },
-      { path: "reports", element: wrap(Reports) },
-      { path: "integrations", element: wrap(Integrations) },
-      { path: "profile", element: wrap(Profile) },
+      { path: "add-borrower",    element: wrap(AddBorrower), action: addBorrowerAction },
+      { path: "borrowers",       element: wrap(Borrowers) },
+      { path: "borrowers/:id",   element: wrap(BorrowerDetails) },
+      { path: "lenders",         element: wrap(Lenders) },
+      { path: "credit-models",   element: wrap(CreditModels) },
+      { path: "risk-analysis",   element: wrap(RiskAnalysis) },
+      { path: "transactions",    element: wrap(Transactions) },
+      { path: "reports",         element: wrap(Reports) },
+      { path: "integrations",    element: wrap(Integrations) },
+      { path: "profile",         element: wrap(Profile) },
       { path: "borrower-scoring", element: wrap(ApprovedBorrowerScoring) },
+      { path: "rejected-loans",  element: wrap(RejectedLoans) },
+      { path: "approved-loans",  element: wrap(ApprovedLoans) },
+      { path: "blockchain-logs", element: wrap(BlockchainLogs) },
+      { path: "portfolio-monitoring", element: wrap(PortfolioMonitoring) },
 
       // Settings with nested tab layout
       {
@@ -130,8 +114,8 @@ export const router = createBrowserRouter([
         children: [
           { index: true, element: wrap(SettingsGeneral) },
           { path: "security", element: wrap(SettingsSecurity) },
-          { path: "billing", element: wrap(SettingsBilling) },
-          { path: "team", element: wrap(SettingsTeam) },
+          { path: "billing",  element: wrap(SettingsBilling) },
+          { path: "team",     element: wrap(SettingsTeam) },
         ],
       },
     ],
