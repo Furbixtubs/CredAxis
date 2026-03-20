@@ -100,7 +100,7 @@ export const router = createBrowserRouter([
   { path: "/login", element: wrap(Login) },
   { path: "/signup", element: wrap(Signup) },
 
-  // ── Protected dashboard ─────────────────────────────────────────────────────
+  // ──New Protected dashboard ─────────────────────────────────────────────────────
   {
     path: "/dashboard",
     element: (
