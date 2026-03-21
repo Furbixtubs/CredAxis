@@ -5,6 +5,7 @@ import PublicLayout from "../layouts/PublicLayout";
 import DashboardLayout from "../layouts/DashboardLayout";
 import SettingsLayout from "../layouts/SettingsLayout";
 import ProtectedRoute from "../features/auth/ProtectedRoute";
+import PublicRoute from "@/features/auth/PublicRoute";
 import { action as addBorrowerAction } from "../pages/dashboard/add-borrower/AddBorrower";
 
 // ── Loading fallback ──────────────────────────────────────────────────────────
@@ -32,8 +33,9 @@ const Documentation = lazy(() => import("../pages/public/Documentation"));
 const Contact = lazy(() => import("../pages/public/Contact"));
 
 // ── Auth pages ────────────────────────────────────────────────────────────────
-const Login = lazy(() => import("../pages/auth/Login"));
-const Signup = lazy(() => import("../pages/auth/Signup"));
+const Login = lazy(() => import("../pages/auth/login/Login"));
+const Signup = lazy(() => import("../pages/auth/signup/Signup"));
+const CheckEmail = lazy(() => import("../pages/auth/CheckEmail"));
 const VerifyOTP = lazy(() => import("../pages/auth/VerifyOTP"));
 
 // ── Dashboard pages ───────────────────────────────────────────────────────────
@@ -98,9 +100,38 @@ export const router = createBrowserRouter([
   },
 
   // ── Auth pages (no layout wrapper) ─────────────────────────────────────────
-  { path: "/login", element: wrap(Login) },
-  { path: "/signup", element: wrap(Signup) },
-  { path: "/verify-otp", element: wrap(VerifyOTP) },
+  {
+    path: "/login",
+    element: (
+      <PublicRoute>
+        <Login />
+      </PublicRoute>
+    ),
+  },
+  {
+    path: "/signup",
+    element: (
+      <PublicRoute>
+        <Signup />
+      </PublicRoute>
+    ),
+  },
+  {
+    path: "/verify-otp",
+    element: (
+      <PublicRoute>
+        <VerifyOTP />
+      </PublicRoute>
+    ),
+  },
+  {
+    path: "/check-email",
+    element: (
+      <PublicRoute>
+        <CheckEmail />
+      </PublicRoute>
+    ),
+  },
 
   // ── Protected dashboard ─────────────────────────────────────────────────────
   {
