@@ -231,7 +231,7 @@ export default function Profile() {
       </div>
 
       {/* ── Hero card (cover + avatar + stats) ──────────────────────── */}
-      <Card className="mb-4 overflow-hidden !p-0">
+      <Card className="mb-4 overflow-hidden p-0">
         {/* Cover */}
         <div
           className="relative flex h-20 items-end justify-end pr-3 pb-2 sm:h-28 sm:pr-4 sm:pb-3"

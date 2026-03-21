@@ -144,7 +144,7 @@ function NavItem({ item }) {
           <>
             {isActive && (
               <span
-                className="absolute top-1/2 right-0 -translate-y-1/2 rounded-l-full bg-yellow-400"
+                className="absolute top-1/2 right-0 -translate-y-1/2 rounded-l-full bg-white"
                 style={{ width: 5, height: 36 }}
               />
             )}
