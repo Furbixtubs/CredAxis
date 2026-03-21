@@ -1,4 +1,3 @@
-// src/pages/dashboard/borrowers/AddBorrower.jsx
 import {
   Form,
   Link,
@@ -8,7 +7,7 @@ import {
 } from "react-router";
 import { ArrowLeft, CheckCircle2, Loader2 } from "lucide-react";
 
-// ─── Action — runs on form submit (server or client action) ───────────────────
+// Action — runs on form submit (server or client action) 
 export async function action({ request }) {
   const data = await request.formData();
   const name = data.get("name")?.toString().trim() ?? "";

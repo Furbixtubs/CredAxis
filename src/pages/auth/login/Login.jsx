@@ -34,19 +34,31 @@ export default function Login() {
     },
   });
 
-  const onSubmit = async (data) => {
-    setServerError("");
-    try {
-      const res = await authService.login(data.email, data.password);
-      if (res.status === "success") {
+const onSubmit = async (data) => {
+  setServerError("");
+  try {
+    const res = await authService.login(data.email, data.password);
+
+    if (res.status === "success") {
+      if (res.message === "Logged in successfully without OTP") {
+        // session still valid
+        login(res.user);
+        navigate(from, { replace: true });
+      } else {
+        // OTP required 
         navigate("/verify-otp", {
-          state: { email: data.email, fromLogin: true },
+          state: {
+            email: data.email,
+            fromLogin: true,
+            otp: res.user?.otp?.otp || null,  
+          },
         });
       }
-    } catch (err) {
-      setServerError(err.message || "Invalid email or password.");
     }
-  };
+  } catch (err) {
+    setServerError(err.message || "Invalid email or password.");
+  }
+};
 
   return (
     <article className="login-page">

@@ -1,10 +1,11 @@
+// src/pages/auth/VerifyOTP.jsx
 import { useState, useRef, useEffect } from "react";
-import { useNavigate, useLocation, Link } from "react-router";
+import { useNavigate, useLocation, useSearchParams, Link } from "react-router";
 import { useAuth } from "../../features/auth/authContext";
 import { authService } from "../../services/authService";
 
 const OTP_LENGTH = 6;
-const RESEND_COUNTDOWN = 60;
+const RESEND_COUNTDOWN = 300;
 
 function useBreakpoint() {
   const [width, setWidth] = useState(
@@ -19,14 +20,20 @@ function useBreakpoint() {
 }
 
 export default function VerifyOTP() {
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const location = useLocation();
   const { login } = useAuth();
   const { isMobile } = useBreakpoint();
 
-  // Data passed from Login or Signup
+  // Data passed from Login
   const email = location.state?.email || "your email";
   const fromLogin = location.state?.fromLogin === true;
+  const otpFromLogin = location.state?.otp || null;
+
+  // token exists in URL when coming from signup verification link
+  const token = searchParams.get("token");
+  const fromSignupLink = !!token;
 
   const [digits, setDigits] = useState(Array(OTP_LENGTH).fill(""));
   const [error, setError] = useState("");
@@ -34,12 +41,26 @@ export default function VerifyOTP() {
   const [success, setSuccess] = useState(false);
   const [countdown, setCountdown] = useState(RESEND_COUNTDOWN);
   const [resending, setResending] = useState(false);
+  const [displayOtp, setDisplayOtp] = useState(null);
 
   const inputRefs = useRef([]);
 
-  // Auto-focus first input on mount
+  // If coming from signup link — trigger OTP generation immediately
+  // Otherwise focus first input for manual entry
   useEffect(() => {
-    inputRefs.current[0]?.focus();
+    if (fromSignupLink && token) {
+      triggerSignupOtp();
+    } else {
+      // autofill OTP from login
+      if (otpFromLogin) {
+        const otp = otpFromLogin.toString();
+        setDisplayOtp(otp);
+        setDigits(otp.split(""));
+        inputRefs.current[OTP_LENGTH - 1]?.focus();
+      } else {
+        inputRefs.current[0]?.focus();
+      }
+    }
   }, []);
 
   // Countdown timer for resend
@@ -49,14 +70,26 @@ export default function VerifyOTP() {
     return () => clearTimeout(t);
   }, [countdown]);
 
+  async function triggerSignupOtp() {
+    try {
+      const res = await authService.triggerSignupOtp(token);
+      if (res.data?.otp?.otp) {
+        const otp = res.data.otp.otp.toString();
+        setDisplayOtp(otp);
+        setDigits(otp.split(""));
+        inputRefs.current[OTP_LENGTH - 1]?.focus();
+      }
+    } catch (err) {
+      setError(err.message || "Invalid or expired verification link.");
+    }
+  }
+
   function handleChange(value, index) {
     const digit = value.replace(/\D/g, "").slice(-1);
     const next = [...digits];
     next[index] = digit;
     setDigits(next);
     setError("");
-
-    // Auto-advance to next input
     if (digit && index < OTP_LENGTH - 1) {
       inputRefs.current[index + 1]?.focus();
     }
@@ -96,7 +129,6 @@ export default function VerifyOTP() {
   async function handleVerify(e) {
     e.preventDefault();
     const entered = digits.join("");
-
     if (entered.length < OTP_LENGTH) {
       setError("Please enter all 6 digits.");
       return;
@@ -106,22 +138,31 @@ export default function VerifyOTP() {
     setError("");
 
     try {
-      // Hit PATCH /user/authOtp with the entered OTP
-      const res = await authService.verifyOtp(entered);
+      if (fromSignupLink) {
+        // PATCH /user/verify-user?token=... { otp_code }
+        // response: { status, user: { user: { ... } } }
+        const res = await authService.verifySignupOtp(token, entered);
 
-      if (res.status === "success") {
-        setSuccess(true);
-        await new Promise((r) => setTimeout(r, 900));
+        if (res.status === "Success") {
+          setSuccess(true);
+          await new Promise((r) => setTimeout(r, 900));
+          navigate("/login", {
+            state: {
+              verified: true,
+              email: res.user.user.email,
+            },
+          });
+        }
+      } else {
+        // PATCH /user/authOtp { otp_code }
+        // response: { status, data: { user, otp } }
+        const res = await authService.verifyOtp(entered);
 
-        if (fromLogin) {
-          // Coming from login, log in the user and go to dashboard
+        if (res.status === "success") {
+          setSuccess(true);
+          await new Promise((r) => setTimeout(r, 900));
           login(res.data.user);
           navigate("/dashboard", { replace: true });
-        } else {
-          // Coming from signup. Redirect to login with a success message
-          navigate("/login", {
-            state: { verified: true, email },
-          });
         }
       }
     } catch (err) {
@@ -139,8 +180,13 @@ export default function VerifyOTP() {
     setDigits(Array(OTP_LENGTH).fill(""));
 
     try {
-      // Hit resend OTP endpoint
-      await authService.resendOtp(email);
+      if (fromSignupLink) {
+        // Re-trigger signup OTP using the same token
+        await triggerSignupOtp();
+      } else {
+        // Re-trigger login OTP using email
+        await authService.resendOtp(email);
+      }
     } catch (err) {
       setError(err.message || "Failed to resend OTP. Please try again.");
     } finally {
@@ -198,7 +244,13 @@ export default function VerifyOTP() {
           )}
         </div>
 
-        <h2 style={s.title}>{success ? "Verified!" : "Check your email"}</h2>
+        {/* Display OTP on screen since email service is not active */}
+        {displayOtp && (
+          <div style={s.hint}>
+            <strong>Your OTP:</strong> {displayOtp}
+          </div>
+        )}
+
         <p style={s.sub}>
           {success ? (
             fromLogin ? (
@@ -207,10 +259,7 @@ export default function VerifyOTP() {
               "Your account has been verified. Redirecting to login…"
             )
           ) : (
-            <>
-              We sent a 6-digit code to <strong>{maskEmail(email)}</strong>.
-              Enter it below.
-            </>
+            <>Enter your 6-digit code below.</>
           )}
         </p>
 
@@ -265,6 +314,7 @@ export default function VerifyOTP() {
               </span>
             ) : (
               <button
+                type="button"
                 onClick={handleResend}
                 disabled={resending}
                 style={s.resendBtn}
@@ -318,11 +368,16 @@ const s = {
     justifyContent: "center",
     marginBottom: "20px",
   },
-  title: {
-    fontSize: "22px",
-    fontWeight: 700,
-    color: "#111827",
-    margin: "0 0 8px",
+  hint: {
+    backgroundColor: "#F0FDF4",
+    border: "1px solid #BBF7D0",
+    color: "#065F46",
+    borderRadius: "8px",
+    padding: "8px 14px",
+    fontSize: "14px",
+    marginBottom: "16px",
+    width: "100%",
+    boxSizing: "border-box",
     textAlign: "center",
   },
   sub: {

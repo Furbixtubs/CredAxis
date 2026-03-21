@@ -3,50 +3,52 @@ import { useLocation, Link } from "react-router";
 export default function CheckEmail() {
   const location = useLocation();
   const email = location.state?.email || "your email";
+  const verificationLink = location.state?.link || null;
+
+  console.log("location.state:", location.state);
+
+  // Extract token from backend link and build frontend URL
+  const frontendLink = verificationLink
+    ? `/verify-otp?token=${new URL(verificationLink).searchParams.get("token")}`
+    : null;
 
   return (
     <main style={s.page}>
-      <section style={s.card}>
-        <div style={s.iconWrap}>
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
-            <rect
-              x="2"
-              y="4"
-              width="20"
-              height="16"
-              rx="3"
-              stroke="#0B298C"
-              strokeWidth="2"
-            />
-            <path
-              d="M2 8l10 7 10-7"
-              stroke="#0B298C"
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
-          </svg>
-        </div>
-        <h2 style={s.title}>Check your email</h2>
-        <p style={s.sub}>
-          We sent a verification link to <strong>{email}</strong>. Click the
-          link in your email to activate your account.
-        </p>
-        <p style={s.note}>
-          Didn't receive it? Check your spam folder or{" "}
-          <Link to="/signup" style={s.link}>
-            try signing up again
+      {/* Then use frontendLink instead of verificationLink */}
+      {frontendLink && (
+        <div style={s.linkBox}>
+          <p style={s.linkLabel}>Verification link:</p>
+          <Link to={frontendLink} style={s.linkAnchor}>
+            Click here to verify your account
           </Link>
-          .
-        </p>
-        <Link to="/login" style={s.btn}>
-          Back to Login
-        </Link>
-      </section>
+        </div>
+      )}
     </main>
   );
 }
 
 const s = {
+  linkBox: {
+    backgroundColor: "#EFF6FF",
+    border: "1px solid #BFDBFE",
+    borderRadius: "8px",
+    padding: "12px 16px",
+    width: "100%",
+    boxSizing: "border-box",
+    marginBottom: "16px",
+  },
+  linkLabel: {
+    fontSize: "12px",
+    color: "#6B7280",
+    margin: "0 0 6px",
+  },
+  linkAnchor: {
+    color: "#0B298C",
+    fontWeight: 600,
+    fontSize: "14px",
+    wordBreak: "break-all",
+  },
+
   page: {
     minHeight: "100vh",
     display: "flex",

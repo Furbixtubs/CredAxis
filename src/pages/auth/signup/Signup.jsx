@@ -35,20 +35,19 @@ export default function Signup() {
     setServerError("");
 
     try {
-      await authService.signup({
+      const res = await authService.signup({
         first_name: data.firstName,
         last_name: data.lastName,
         email: data.email,
         gender: data.gender,
-        // phone_number: data.phone,
+        phone_number: data.phone,
         password: data.password,
       });
 
       navigate("/check-email", {
         state: {
           email: data.email,
-          name: `${data.firstName} ${data.lastName}`.trim(),
-          fromSignup: true,
+          link: res.data.link,
         },
       });
     } catch (err) {
