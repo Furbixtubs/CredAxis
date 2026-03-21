@@ -32,7 +32,10 @@ export async function action({ request }) {
   // await createBorrower({ name, phone, bvn });
 
   // Redirect to borrower scoring/approval page with form data in query params
-  const redirectUrl = new URL("/dashboard/borrower-scoring", "http://localhost");
+  const redirectUrl = new URL(
+    "/dashboard/borrower-scoring",
+    "http://localhost",
+  );
   redirectUrl.searchParams.set("name", name);
   redirectUrl.searchParams.set("phone", phone);
 
@@ -104,7 +107,7 @@ export default function AddBorrower() {
 
       {/* Back arrow — Link instead of onClick navigate(-1) */}
       <Link
-        to="/dashboard/borrowers"
+        to="/dashboard"
         className="absolute top-8 left-8 flex items-center gap-2 text-[#a0aecf] transition hover:text-white"
         style={{ textDecoration: "none" }}
       >

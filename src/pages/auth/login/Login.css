@@ -1,4 +1,4 @@
-/* ─── Page Shell ─────────────────────────────────────────────── */
+/* ─── Page Shell ────*/
 .login-page {
   background-color: #0a1628;
   min-height: 100vh;
@@ -55,7 +55,7 @@
   font-family: "Segoe UI", sans-serif;
 }
 
-/* ─── Right – Form Wrapper ───────────────────────────────────── */
+/* Right – Form Wrapper */
 .login-form-wrapper {
   flex: 1 1 50%;
   display: flex;
@@ -65,7 +65,7 @@
   box-sizing: border-box;
 }
 
-/* ─── Card ───────────────────────────────────────────────────── */
+/* Card */
 .login-card {
   background-color: #1a3a8f;
   border-radius: 12px;
@@ -75,7 +75,7 @@
   box-sizing: border-box;
 }
 
-/* ─── Title ──────────────────────────────────────────────────── */
+/* Title */
 .login-title {
   color: #f5c518;
   font-weight: 700;
@@ -85,7 +85,50 @@
   font-family: "Poppins", sans-serif;
 }
 
-/* ─── Form Groups ────────────────────────────────────────────── */
+/* Banners (success / error) */
+.login-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  width: 100%;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  margin-bottom: 20px;
+  font-family: "Poppins", sans-serif;
+  box-sizing: border-box;
+}
+
+.login-banner--success {
+  background-color: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #065f46;
+}
+
+.login-banner--error {
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+}
+
+.login-banner__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  background-color: #007020;
+  color: #fff;
+  border-radius: 50%;
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* Form Groups */
 .form-group {
   margin-bottom: 1rem;
 }
@@ -99,25 +142,79 @@
   margin-bottom: 8px;
   display: block;
   font-size: 0.95rem;
+  font-family: "Poppins", sans-serif;
 }
 
+/* Inputs */
 .form-input {
   width: 100%;
   border-radius: 6px;
-  border: none;
+  border: 2px solid transparent;
   padding: 12px 14px;
   font-size: 0.95rem;
   background-color: #fff;
   outline: none;
   box-sizing: border-box;
-  transition: box-shadow 0.2s ease;
+  transition:
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+  font-family: "Poppins", sans-serif;
 }
 
 .form-input:focus {
   box-shadow: 0 0 0 3px rgba(245, 197, 24, 0.35);
 }
 
-/* ─── Continue Button ────────────────────────────────────────── */
+/* Error state */
+.form-input--error {
+  border-color: #ef4444;
+}
+
+.form-input--error:focus {
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.25);
+}
+
+/* Field error message */
+.form-field-error {
+  color: #fca5a5;
+  font-size: 0.78rem;
+  font-family: "Poppins", sans-serif;
+  margin-top: 5px;
+  margin-bottom: 0;
+}
+
+/* Password wrapper + toggle */
+.form-password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.form-password-wrapper .form-input {
+  padding-right: 42px;
+}
+
+.form-password-toggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: #6b7280;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s ease;
+}
+
+.form-password-toggle:hover {
+  color: #111827;
+}
+
+/* Continue Button */
 .btn-continue {
   width: 100%;
   background-color: #0d1b3e;
@@ -129,7 +226,14 @@
   border: none;
   margin-bottom: 28px;
   cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.1s ease;
+  font-family: "Poppins", sans-serif;
+  transition:
+    background-color 0.2s ease,
+    transform 0.1s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
 .btn-continue:hover {
@@ -140,12 +244,34 @@
   transform: scale(0.98);
 }
 
-/* ─── Sign-up Prompt ─────────────────────────────────────────── */
+.btn-continue:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Spinner */
+.btn-spinner {
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/*  Sign-up Prompt */
 .signup-prompt {
   text-align: center;
   margin: 0;
   color: #8fa8d0;
   font-size: 0.9rem;
+  font-family: "Poppins", sans-serif;
 }
 
 .signup-link {
@@ -158,7 +284,6 @@
   text-decoration: underline;
 }
 
-/* ─── Responsive – stack on small screens ────────────────────── */
 @media (max-width: 767px) {
   .login-hero {
     flex: 1 1 100%;
