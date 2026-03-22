@@ -6,7 +6,7 @@ import DashboardLayout from "../layouts/DashboardLayout";
 import SettingsLayout from "../layouts/SettingsLayout";
 import ProtectedRoute from "../features/auth/ProtectedRoute";
 import PublicRoute from "@/features/auth/PublicRoute";
-import { action as addBorrowerAction } from "../pages/dashboard/add-borrower/AddBorrower";
+// import { action as addBorrowerAction } from "../pages/dashboard/add-borrower/AddBorrower";
 
 // ── Loading fallback ──────────────────────────────────────────────────────────
 function Loader() {
@@ -146,7 +146,7 @@ export const router = createBrowserRouter([
       {
         path: "add-borrower",
         element: wrap(AddBorrower),
-        action: addBorrowerAction,
+        // action: addBorrowerAction,
       },
       { path: "borrowers", element: wrap(Borrowers) },
       { path: "borrowers/:id", element: wrap(BorrowerDetails) },
