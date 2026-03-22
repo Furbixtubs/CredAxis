@@ -39,6 +39,7 @@
 .field-group {
   display: flex;
   flex-direction: column;
+  /* removed fixed height so error messages don't get clipped */
 }
 
 /* Spans both columns */
@@ -65,7 +66,9 @@
   background-color: #ffffff;
   font-family: "Poppins", sans-serif;
   outline: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
   box-sizing: border-box;
   width: 100%;
   appearance: none;
@@ -77,6 +80,16 @@
   box-shadow: 0 0 0 3px rgba(26, 58, 143, 0.15);
 }
 
+/* Input error state */
+.field-input--error {
+  border-color: #ef4444;
+}
+
+.field-input--error:focus {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15);
+}
+
 /* Select arrow */
 .field-select {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B7280' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
@@ -84,6 +97,61 @@
   background-position: right 14px center;
   padding-right: 36px;
   cursor: pointer;
+}
+
+/* ─── Password Wrapper (for eye icon) ────────────────────────── */
+.password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-wrapper .field-input {
+  /* make room for the eye icon */
+  padding-right: 42px;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: #6b7280;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s ease;
+}
+
+.password-toggle:hover {
+  color: #374151;
+}
+
+/* ─── Error Messages ─────────────────────────────────────────── */
+.field-error {
+  color: #ef4444;
+  font-size: 0.78rem;
+  font-family: "Poppins", sans-serif;
+  margin-top: 5px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Server / global error banner */
+.error-banner {
+  background-color: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 0.85rem;
+  font-family: "Poppins", sans-serif;
+  margin-bottom: 1.5rem;
 }
 
 /* ─── Checkbox ───────────────────────────────────────────────── */
@@ -106,6 +174,7 @@
   border: 2px solid #1a3a8f;
   accent-color: #1a3a8f;
   cursor: pointer;
+  flex-shrink: 0;
 }
 
 /* ─── Create Account Button ──────────────────────────────────── */
@@ -120,7 +189,13 @@
   border: none;
   cursor: pointer;
   font-family: "Poppins", sans-serif;
-  transition: background-color 0.2s ease, transform 0.1s ease;
+  transition:
+    background-color 0.2s ease,
+    transform 0.1s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
 .btn-create:hover {
@@ -129,6 +204,27 @@
 
 .btn-create:active {
   transform: scale(0.99);
+}
+
+.btn-create:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Spinner inside button */
+.btn-spinner {
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* ─── Login Redirect ─────────────────────────────────────────── */

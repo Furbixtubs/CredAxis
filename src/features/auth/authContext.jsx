@@ -2,33 +2,37 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 const AuthContext = createContext(null);
 
-const TOKEN_KEY = "credaxis_token";
+const USER_KEY = "credaxis_user";
 
 export function AuthProvider({ children }) {
-  const [user,      setUser]      = useState(null);
+  const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // On app load – check for a saved session
+  // On app load — rehydrate user from localStorage
+  // the actual auth is via httpOnly cookie handled by the browser
+  // localStorage just stores the user object for UI purposes
   useEffect(() => {
-    const saved = localStorage.getItem(TOKEN_KEY);
+    const saved = localStorage.getItem(USER_KEY);
     if (saved) {
       try {
         setUser(JSON.parse(saved));
       } catch {
-        localStorage.removeItem(TOKEN_KEY);
+        localStorage.removeItem(USER_KEY);
       }
     }
     setIsLoading(false);
   }, []);
 
+  // Called after successful OTP verification
+  // userData comes from the verify OTP response
   function login(userData) {
     setUser(userData);
-    localStorage.setItem(TOKEN_KEY, JSON.stringify(userData));
+    localStorage.setItem(USER_KEY, JSON.stringify(userData));
   }
 
   function logout() {
     setUser(null);
-    localStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem(USER_KEY);
   }
 
   return (

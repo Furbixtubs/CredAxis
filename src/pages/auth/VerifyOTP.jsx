@@ -1,13 +1,16 @@
+// src/pages/auth/VerifyOTP.jsx
 import { useState, useRef, useEffect } from "react";
-import { useNavigate, useLocation, Link } from "react-router";
+import { useNavigate, useLocation, useSearchParams, Link } from "react-router";
+import { useAuth } from "../../features/auth/authContext";
+import { authService } from "../../services/authService";
 
-// ─── Mock OTP (replace with real API check later) ────────────────────────────
-const MOCK_OTP = "123456";
 const OTP_LENGTH = 6;
-const RESEND_COUNTDOWN = 60; // seconds
+const RESEND_COUNTDOWN = 300;
 
 function useBreakpoint() {
-  const [width, setWidth] = useState(typeof window !== "undefined" ? window.innerWidth : 1024);
+  const [width, setWidth] = useState(
+    typeof window !== "undefined" ? window.innerWidth : 1024,
+  );
   useEffect(() => {
     const handle = () => setWidth(window.innerWidth);
     window.addEventListener("resize", handle);
@@ -17,26 +20,47 @@ function useBreakpoint() {
 }
 
 export default function VerifyOTP() {
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const location = useLocation();
+  const { login } = useAuth();
   const { isMobile } = useBreakpoint();
 
-  // Data passed from Signup
+  // Data passed from Login
   const email = location.state?.email || "your email";
-  const name  = location.state?.name  || "";
+  const fromLogin = location.state?.fromLogin === true;
+  const otpFromLogin = location.state?.otp || null;
+
+  // token exists in URL when coming from signup verification link
+  const token = searchParams.get("token");
+  const fromSignupLink = !!token;
 
   const [digits, setDigits] = useState(Array(OTP_LENGTH).fill(""));
-  const [error, setError]   = useState("");
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [countdown, setCountdown] = useState(RESEND_COUNTDOWN);
   const [resending, setResending] = useState(false);
+  const [displayOtp, setDisplayOtp] = useState(null);
 
   const inputRefs = useRef([]);
 
-  // Auto-focus first input on mount
+  // If coming from signup link — trigger OTP generation immediately
+  // Otherwise focus first input for manual entry
   useEffect(() => {
-    inputRefs.current[0]?.focus();
+    if (fromSignupLink && token) {
+      triggerSignupOtp();
+    } else {
+      // autofill OTP from login
+      if (otpFromLogin) {
+        const otp = otpFromLogin.toString();
+        setDisplayOtp(otp);
+        setDigits(otp.split(""));
+        inputRefs.current[OTP_LENGTH - 1]?.focus();
+      } else {
+        inputRefs.current[0]?.focus();
+      }
+    }
   }, []);
 
   // Countdown timer for resend
@@ -46,15 +70,26 @@ export default function VerifyOTP() {
     return () => clearTimeout(t);
   }, [countdown]);
 
+  async function triggerSignupOtp() {
+    try {
+      const res = await authService.triggerSignupOtp(token);
+      if (res.data?.otp?.otp) {
+        const otp = res.data.otp.otp.toString();
+        setDisplayOtp(otp);
+        setDigits(otp.split(""));
+        inputRefs.current[OTP_LENGTH - 1]?.focus();
+      }
+    } catch (err) {
+      setError(err.message || "Invalid or expired verification link.");
+    }
+  }
+
   function handleChange(value, index) {
-    // Accept only digits
     const digit = value.replace(/\D/g, "").slice(-1);
     const next = [...digits];
     next[index] = digit;
     setDigits(next);
     setError("");
-
-    // Auto-advance
     if (digit && index < OTP_LENGTH - 1) {
       inputRefs.current[index + 1]?.focus();
     }
@@ -69,14 +104,18 @@ export default function VerifyOTP() {
         setDigits(next);
       }
     }
-    if (e.key === "ArrowLeft" && index > 0) inputRefs.current[index - 1]?.focus();
-    if (e.key === "ArrowRight" && index < OTP_LENGTH - 1) inputRefs.current[index + 1]?.focus();
+    if (e.key === "ArrowLeft" && index > 0)
+      inputRefs.current[index - 1]?.focus();
+    if (e.key === "ArrowRight" && index < OTP_LENGTH - 1)
+      inputRefs.current[index + 1]?.focus();
   }
 
-  // Handle paste — fills all boxes from paste position
   function handlePaste(e, index) {
     e.preventDefault();
-    const pasted = e.clipboardData.getData("text").replace(/\D/g, "").slice(0, OTP_LENGTH);
+    const pasted = e.clipboardData
+      .getData("text")
+      .replace(/\D/g, "")
+      .slice(0, OTP_LENGTH);
     if (!pasted) return;
     const next = [...digits];
     for (let i = 0; i < pasted.length; i++) {
@@ -96,34 +135,65 @@ export default function VerifyOTP() {
     }
 
     setLoading(true);
-    // Mock: simulate API verification
-    await new Promise((r) => setTimeout(r, 700));
-    setLoading(false);
+    setError("");
 
-    if (entered !== MOCK_OTP) {
-      setError("Invalid OTP. Please try again.");
+    try {
+      if (fromSignupLink) {
+        // PATCH /user/verify-user?token=... { otp_code }
+        // response: { status, user: { user: { ... } } }
+        const res = await authService.verifySignupOtp(token, entered);
+
+        if (res.status === "Success") {
+          setSuccess(true);
+          await new Promise((r) => setTimeout(r, 900));
+          navigate("/login", {
+            state: {
+              verified: true,
+              email: res.user.user.email,
+            },
+          });
+        }
+      } else {
+        // PATCH /user/authOtp { otp_code }
+        // response: { status, data: { user, otp } }
+        const res = await authService.verifyOtp(entered);
+
+        if (res.status === "success") {
+          setSuccess(true);
+          await new Promise((r) => setTimeout(r, 900));
+          login(res.data.user);
+          navigate("/dashboard", { replace: true });
+        }
+      }
+    } catch (err) {
+      setError(err.message || "Invalid OTP. Please try again.");
       setDigits(Array(OTP_LENGTH).fill(""));
       inputRefs.current[0]?.focus();
-      return;
+    } finally {
+      setLoading(false);
     }
-
-    // Success state before redirect
-    setSuccess(true);
-    await new Promise((r) => setTimeout(r, 900));
-
-    navigate("/login", {
-      state: { verified: true, email, name },
-    });
   }
 
   async function handleResend() {
     setResending(true);
     setError("");
     setDigits(Array(OTP_LENGTH).fill(""));
-    await new Promise((r) => setTimeout(r, 600));
-    setResending(false);
-    setCountdown(RESEND_COUNTDOWN);
-    inputRefs.current[0]?.focus();
+
+    try {
+      if (fromSignupLink) {
+        // Re-trigger signup OTP using the same token
+        await triggerSignupOtp();
+      } else {
+        // Re-trigger login OTP using email
+        await authService.resendOtp(email);
+      }
+    } catch (err) {
+      setError(err.message || "Failed to resend OTP. Please try again.");
+    } finally {
+      setResending(false);
+      setCountdown(RESEND_COUNTDOWN);
+      inputRefs.current[0]?.focus();
+    }
   }
 
   const maskEmail = (em) => {
@@ -134,36 +204,64 @@ export default function VerifyOTP() {
 
   return (
     <div style={s.page}>
-      <div style={{ ...s.card, width: isMobile ? "100%" : "420px", padding: isMobile ? "28px 20px" : "40px 36px" }}>
-
+      <div
+        style={{
+          ...s.card,
+          width: isMobile ? "100%" : "420px",
+          padding: isMobile ? "28px 20px" : "40px 36px",
+        }}
+      >
         {/* Icon */}
         <div style={s.iconWrap}>
           {success ? (
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-              <path d="M20 6L9 17L4 12" stroke="#007020" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+              <path
+                d="M20 6L9 17L4 12"
+                stroke="#007020"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
             </svg>
           ) : (
             <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
-              <rect x="2" y="4" width="20" height="16" rx="3" stroke="#0B298C" strokeWidth="2" />
-              <path d="M2 8l10 7 10-7" stroke="#0B298C" strokeWidth="2" strokeLinecap="round" />
+              <rect
+                x="2"
+                y="4"
+                width="20"
+                height="16"
+                rx="3"
+                stroke="#0B298C"
+                strokeWidth="2"
+              />
+              <path
+                d="M2 8l10 7 10-7"
+                stroke="#0B298C"
+                strokeWidth="2"
+                strokeLinecap="round"
+              />
             </svg>
           )}
         </div>
 
-        <h2 style={s.title}>{success ? "Verified!" : "Check your email"}</h2>
-        <p style={s.sub}>
-          {success
-            ? "Your account has been verified. Redirecting to login…"
-            : <>We sent a 6-digit code to <strong>{maskEmail(email)}</strong>. Enter it below to verify your account.</>
-          }
-        </p>
-
-        {/* Mock hint */}
-        {!success && (
+        {/* Display OTP on screen since email service is not active */}
+        {displayOtp && (
           <div style={s.hint}>
-            <strong>Demo OTP:</strong> {MOCK_OTP}
+            <strong>Your OTP:</strong> {displayOtp}
           </div>
         )}
+
+        <p style={s.sub}>
+          {success ? (
+            fromLogin ? (
+              "Verified! Taking you to your dashboard…"
+            ) : (
+              "Your account has been verified. Redirecting to login…"
+            )
+          ) : (
+            <>Enter your 6-digit code below.</>
+          )}
+        </p>
 
         {/* OTP Form */}
         {!success && (
@@ -207,11 +305,16 @@ export default function VerifyOTP() {
         {/* Resend */}
         {!success && (
           <div style={s.resendRow}>
-            <span style={{ fontSize: "13px", color: "#6B7280" }}>Didn't receive the code?</span>
+            <span style={{ fontSize: "13px", color: "#6B7280" }}>
+              Didn't receive the code?
+            </span>
             {countdown > 0 ? (
-              <span style={{ fontSize: "13px", color: "#9CA3AF" }}>Resend in {countdown}s</span>
+              <span style={{ fontSize: "13px", color: "#9CA3AF" }}>
+                Resend in {countdown}s
+              </span>
             ) : (
               <button
+                type="button"
                 onClick={handleResend}
                 disabled={resending}
                 style={s.resendBtn}
@@ -225,7 +328,9 @@ export default function VerifyOTP() {
         {/* Back link */}
         {!success && (
           <div style={{ textAlign: "center", marginTop: "20px" }}>
-            <Link to="/signup" style={s.backLink}>← Back to Sign up</Link>
+            <Link to={fromLogin ? "/login" : "/signup"} style={s.backLink}>
+              ← Back to {fromLogin ? "Login" : "Sign up"}
+            </Link>
           </div>
         )}
       </div>
@@ -263,11 +368,16 @@ const s = {
     justifyContent: "center",
     marginBottom: "20px",
   },
-  title: {
-    fontSize: "22px",
-    fontWeight: 700,
-    color: "#111827",
-    margin: "0 0 8px",
+  hint: {
+    backgroundColor: "#F0FDF4",
+    border: "1px solid #BBF7D0",
+    color: "#065F46",
+    borderRadius: "8px",
+    padding: "8px 14px",
+    fontSize: "14px",
+    marginBottom: "16px",
+    width: "100%",
+    boxSizing: "border-box",
     textAlign: "center",
   },
   sub: {
@@ -276,18 +386,6 @@ const s = {
     textAlign: "center",
     lineHeight: 1.6,
     margin: "0 0 20px",
-  },
-  hint: {
-    backgroundColor: "#F0FDF4",
-    border: "1px solid #BBF7D0",
-    color: "#065F46",
-    borderRadius: "8px",
-    padding: "8px 14px",
-    fontSize: "13px",
-    marginBottom: "20px",
-    width: "100%",
-    boxSizing: "border-box",
-    textAlign: "center",
   },
   otpRow: {
     display: "flex",

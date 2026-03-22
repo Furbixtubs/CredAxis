@@ -58,7 +58,10 @@ export default function Topbar({ title = "Dashboard", onMenuClick }) {
         {/* Avatar */}
         <Avatar className="h-8 w-8 cursor-pointer">
           <AvatarFallback className="bg-brand-blue/20 text-brand-teal text-xs font-semibold">
-            {getInitials(user?.name || "U")}
+            {getInitials(
+              `${user?.first_name || ""} ${user?.last_name || ""}`.trim() ||
+                "U",
+            )}
           </AvatarFallback>
         </Avatar>
       </div>
