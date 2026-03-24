@@ -1,62 +1,48 @@
-import {
-  Form,
-  Link,
-  useNavigation,
-  useActionData,
-  redirect,
-} from "react-router";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft, CheckCircle2, Loader2 } from "lucide-react";
+import { addBorrowerSchema } from "./addBorrowerSchema";
+import { Field, FieldInput } from "./fieldComponents";
+import { authService } from "@/services/authService";
 
-// Action — runs on form submit (server or client action) 
-export async function action({ request }) {
-  const data = await request.formData();
-  const name = data.get("name")?.toString().trim() ?? "";
-  const phone = data.get("phone")?.toString().trim() ?? "";
-  const bvn = data.get("bvn")?.toString().trim() ?? "";
-
-  // Validate
-  const errors = {};
-  if (!name) errors.name = "Full name is required";
-  if (!phone) errors.phone = "Phone number is required";
-  else if (!/^\+?[\d\s\-()]{7,15}$/.test(phone))
-    errors.phone = "Enter a valid phone number";
-  if (!bvn) errors.bvn = "BVN is required";
-  else if (!/^\d{11}$/.test(bvn)) errors.bvn = "BVN must be exactly 11 digits";
-
-  if (Object.keys(errors).length) {
-    return { errors, values: { name, phone, bvn } };
-  }
-
-  // TODO: replace with your real API call
-  // await createBorrower({ name, phone, bvn });
-
-  // Redirect to borrower scoring/approval page with form data in query params
-  const redirectUrl = new URL(
-    "/dashboard/borrower-scoring",
-    "http://localhost",
-  );
-  redirectUrl.searchParams.set("name", name);
-  redirectUrl.searchParams.set("phone", phone);
-
-  return redirect(redirectUrl.pathname + redirectUrl.search);
-}
-
-// ─── Component ────────────────────────────────────────────────────────────────
+// Main component
 export default function AddBorrower() {
-  const navigation = useNavigation();
-  const actionData = useActionData();
+  const navigate = useNavigate();
+  const [success, setSuccess] = useState(false);
+  const [serverError, setServerError] = useState("");
 
-  const isSubmitting = navigation.state === "submitting";
-  const isSuccess =
-    typeof window !== "undefined" &&
-    new URLSearchParams(window.location.search).get("success") === "true";
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    resolver: zodResolver(addBorrowerSchema),
+    defaultValues: {
+      first_name: "",
+      last_name: "",
+      phone_no: "",
+      bvn: "",
+    },
+  });
 
-  // Pull back field values so inputs stay filled on validation error
-  const values = actionData?.values ?? {};
-  const errors = actionData?.errors ?? {};
+  const onSubmit = async (data) => {
+    setServerError("");
 
-  // ── Success screen ──────────────────────────────────────────────────────────
-  if (isSuccess) {
+    try {
+      const res = await authService.addBorrower(data);
+      console.log("Submitting borrower:", data);
+      console.log("Server response:", res);
+      await new Promise((r) => setTimeout(r, 800));
+      setSuccess(true);
+    } catch (err) {
+      setServerError(err.message || "Something went wrong. Please try again.");
+    }
+  };
+
+  // Success screen
+  if (success) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center bg-linear-to-br from-[#061546] via-[#0B298C] to-sky-500">
         <div className="flex flex-col items-center gap-5 text-center">
@@ -70,14 +56,13 @@ export default function AddBorrower() {
             The borrower has been successfully added.
           </p>
           <div className="mt-4 flex gap-3">
-            {/* Link back to the clean form */}
-            <Link
-              to="/dashboard/add-borrower"
+            <button
+              type="button"
+              onClick={() => setSuccess(false)}
               className="rounded-full border border-white/20 px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-white/10"
-              style={{ textDecoration: "none" }}
             >
               Add Another
-            </Link>
+            </button>
             <Link
               to="/dashboard/borrowers"
               className="rounded-full px-6 py-2.5 text-sm font-semibold text-white transition hover:opacity-90"
@@ -104,7 +89,7 @@ export default function AddBorrower() {
         }}
       />
 
-      {/* Back arrow — Link instead of onClick navigate(-1) */}
+      {/* Back arrow */}
       <Link
         to="/dashboard"
         className="absolute top-8 left-8 flex items-center gap-2 text-[#a0aecf] transition hover:text-white"
@@ -128,47 +113,69 @@ export default function AddBorrower() {
             Add a borrower
           </h1>
 
-          <Form method="post" className="flex flex-col gap-6" noValidate>
-            <div className="grid gap-6 md:grid-cols-2">
-              <Field
-                label="Name"
-                name="name"
-                type="text"
-                placeholder="Enter full name"
-                defaultValue={values.name}
-                error={errors.name}
-              />
+          {/* Server error */}
+          {serverError && (
+            <div className="mb-6 rounded-lg border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-700">
+              {serverError}
+            </div>
+          )}
 
-              <Field
-                label="Phone number"
-                name="phone"
-                type="tel"
-                placeholder="Enter phone number"
-                defaultValue={values.phone}
-                error={errors.phone}
-              />
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="flex flex-col gap-6"
+            noValidate
+          >
+            {/* First name + Last name */}
+            <div className="grid gap-6 md:grid-cols-2">
+              <Field label="First name" error={errors.first_name?.message}>
+                <FieldInput
+                  type="text"
+                  placeholder="Enter first name"
+                  error={errors.first_name?.message}
+                  {...register("first_name")}
+                />
+              </Field>
+
+              <Field label="Last name" error={errors.last_name?.message}>
+                <FieldInput
+                  type="text"
+                  placeholder="Enter last name"
+                  error={errors.last_name?.message}
+                  {...register("last_name")}
+                />
+              </Field>
             </div>
 
-            <Field
-              label="BVN"
-              name="bvn"
-              type="text"
-              placeholder="Enter BVN"
-              defaultValue={values.bvn}
-              error={errors.bvn}
-              maxLength={11}
-            />
+            {/* Phone number */}
+            <Field label="Phone number" error={errors.phone_no?.message}>
+              <FieldInput
+                type="tel"
+                placeholder="Enter phone number"
+                error={errors.phone_no?.message}
+                {...register("phone_no")}
+              />
+            </Field>
 
-            {/* Submit — useNavigation().state drives the loading state */}
+            {/* BVN */}
+            <Field label="BVN" error={errors.bvn?.message}>
+              <FieldInput
+                type="text"
+                placeholder="Enter 11-digit BVN"
+                maxLength={11}
+                error={errors.bvn?.message}
+                {...register("bvn")}
+              />
+            </Field>
+
+            {/* Submit */}
             <div className="mt-6 flex justify-center">
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="mb-3 flex items-center justify-center gap-2 rounded-full py-3 text-[17px] font-bold text-white transition hover:opacity-90 active:scale-[0.98] disabled:opacity-70"
+                className="mb-3 flex w-full items-center justify-center gap-2 py-3 text-[17px] font-bold text-white transition hover:opacity-90 active:scale-[0.98] disabled:opacity-70"
                 style={{
                   backgroundColor: "#111d6b",
                   borderRadius: "5px",
-                  width: "100%",
                 }}
               >
                 {isSubmitting ? (
@@ -181,18 +188,17 @@ export default function AddBorrower() {
                 )}
               </button>
             </div>
-          </Form>
+          </form>
 
-          {/* Bottom hint — Link instead of onClick button */}
+          {/* Bottom hint */}
           <p className="mt-16 text-center text-sm text-[#a0aecf]">
             Can't remember borrower's BVN?{" "}
             <Link
               to="/dashboard/borrowers"
-              className="font-medium text-[#a0aecf] underline-offset-2 transition hover:text-white hover:underline"
+              className="font-medium transition hover:underline"
               style={{
                 textDecoration: "none",
-                color: "#111d6b",
-                borderRadius: "5px",
+                color: "#e6ac2c",
               }}
             >
               Search for Borrower
@@ -200,40 +206,6 @@ export default function AddBorrower() {
           </p>
         </div>
       </div>
-    </div>
-  );
-}
-
-// ─── Reusable field component ─────────────────────────────────────────────────
-function Field({
-  label,
-  name,
-  type,
-  placeholder,
-  defaultValue,
-  error,
-  maxLength,
-}) {
-  return (
-    <div className="flex flex-col gap-2">
-      <label className="text-sm font-semibold" style={{ color: "#e6ac2c" }}>
-        {label}
-      </label>
-      <input
-        type={type}
-        name={name}
-        defaultValue={defaultValue}
-        placeholder={placeholder}
-        autoComplete="off"
-        maxLength={maxLength}
-        className="w-full rounded-2xl px-3 py-3 text-[15px] text-gray-700 placeholder-gray-400 transition outline-none focus:ring-2 focus:ring-emerald-400"
-        style={{
-          backgroundColor: "#f0f2f8",
-          border: error ? "2px solid #f87171" : "2px solid transparent",
-          borderRadius: "5px",
-        }}
-      />
-      {error && <span className="text-xs text-red-400">{error}</span>}
     </div>
   );
 }
