@@ -24,7 +24,4 @@ export const authService = {
 
   // Get user profile
   getProfile: (userId) => api.get(`/user/${userId}`),
-
-  // add borrower
-  addBorrower: (borrowerData) => api.post("/bank/add-borrower", borrowerData),
 };
