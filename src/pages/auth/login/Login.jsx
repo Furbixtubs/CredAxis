@@ -112,6 +112,7 @@ export default function Login() {
                   id="email"
                   type="email"
                   autoComplete="email"
+                  placeholder="you@gmail.com"
                   className={`form-input ${errors.email ? "form-input--error" : ""}`}
                   {...register("email")}
                 />
@@ -143,9 +144,18 @@ export default function Login() {
                     {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                   </button>
                 </div>
-                {errors.password && (
-                  <p className="form-field-error">{errors.password.message}</p>
-                )}
+                <div>
+                  {errors.password && (
+                    <p className="form-field-error">
+                      {errors.password.message}
+                    </p>
+                  )}
+                  <div className="flex justify-end">
+                    <Link to="/forgot-password">
+                      <p className="pt-2 text-[#cdd8f0]">Forgot password?</p>
+                    </Link>
+                  </div>
+                </div>
               </div>
 
               {/* Submit */}

@@ -37,6 +37,8 @@ const Login = lazy(() => import("../pages/auth/login/Login"));
 const Signup = lazy(() => import("../pages/auth/signup/Signup"));
 const CheckEmail = lazy(() => import("../pages/auth/CheckEmail"));
 const VerifyOTP = lazy(() => import("../pages/auth/VerifyOTP"));
+const ForgotPassword = lazy(() => import("../pages/auth/ForgotPassword"));
+const ResetPassword = lazy(() => import("../pages/auth/ResetPassword"));
 
 // ── Dashboard pages ───────────────────────────────────────────────────────────
 const Overview = lazy(() => import("../pages/dashboard/overview/Overview"));
@@ -129,6 +131,22 @@ export const router = createBrowserRouter([
     element: (
       <PublicRoute>
         <CheckEmail />
+      </PublicRoute>
+    ),
+  },
+  {
+    path: "/forgot-password",
+    element: (
+      <PublicRoute>
+        <ForgotPassword />
+      </PublicRoute>
+    ),
+  },
+  {
+    path: "/reset-password",
+    element: (
+      <PublicRoute>
+        <ResetPassword />
       </PublicRoute>
     ),
   },
