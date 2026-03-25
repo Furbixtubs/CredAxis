@@ -1,6 +1,5 @@
-// src/pages/auth/ForgotPassword.jsx
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate, useSearchParams } from "react-router";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -15,9 +14,9 @@ const forgotPasswordSchema = z.object({
 });
 
 export default function ForgotPassword() {
+  const [searchParams] = useSearchParams();
   const [serverError, setServerError] = useState("");
-  const [resetLink, setResetLink] = useState(null);
-  const [submitted, setSubmitted] = useState(false);
+  const navigate = useNavigate();
 
   const {
     register,
@@ -34,66 +33,22 @@ export default function ForgotPassword() {
     try {
       const res = await authService.forgotPassword(data.email);
 
-      if (res.status === "Success") {
-        setResetLink(res.data?.link || null);
-        setSubmitted(true);
+      const status = res.staus || res.status;
+
+      if (status === "Success") {
+        const linkUrl = new URL(res.data.link);
+        const token = linkUrl.searchParams.get("token");
+        navigate(`/reset-password?token=${token}`, {
+          state: {
+            token,
+          },
+        });
       }
     } catch (err) {
       setServerError(err.message || "Something went wrong. Please try again.");
     }
   };
 
-  // Success state
-  if (submitted) {
-    return (
-      <main style={s.page}>
-        <section style={s.card}>
-          <div style={s.iconWrap}>
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
-              <rect
-                x="2"
-                y="4"
-                width="20"
-                height="16"
-                rx="3"
-                stroke="#0B298C"
-                strokeWidth="2"
-              />
-              <path
-                d="M2 8l10 7 10-7"
-                stroke="#0B298C"
-                strokeWidth="2"
-                strokeLinecap="round"
-              />
-            </svg>
-          </div>
-
-          {/* Show link on screen  */}
-          {resetLink && (
-            <div style={s.linkBox}>
-              <p style={s.linkLabel}>Reset link:</p>
-              <a
-                href={resetLink}
-                style={s.linkAnchor}
-                target="_blank"
-                rel="noreferrer"
-              >
-                Click here to reset your password: <br />
-                {resetLink}
-              </a>
-            </div>
-          )}
-
-          <Link to="/login" style={s.backBtn}>
-            <ArrowLeft size={14} />
-            Back to Login
-          </Link>
-        </section>
-      </main>
-    );
-  }
-
-  // Form state
   return (
     <main style={s.page}>
       <section style={s.card}>

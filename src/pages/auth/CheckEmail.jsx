@@ -5,8 +5,6 @@ export default function CheckEmail() {
   const email = location.state?.email || "your email";
   const verificationLink = location.state?.link || null;
 
-  console.log("location.state:", location.state);
-
   // Extract token from backend link and build frontend URL
   const frontendLink = verificationLink
     ? `/verify-otp?token=${new URL(verificationLink).searchParams.get("token")}`
@@ -32,8 +30,8 @@ const s = {
     backgroundColor: "#EFF6FF",
     border: "1px solid #BFDBFE",
     borderRadius: "8px",
-    padding: "12px 16px",
-    width: "100%",
+    padding: "14px 18px",
+    width: "fit-content",
     boxSizing: "border-box",
     marginBottom: "16px",
   },

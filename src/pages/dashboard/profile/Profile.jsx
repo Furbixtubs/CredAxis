@@ -103,7 +103,9 @@ export default function Profile() {
                   className="flex flex-col justify-between text-xl"
                 >
                   <p className="m-0 text-[#787A7C]">{label}</p>
-                  <p className="m-0 truncate font-bold text-[#020304]">{val}</p>
+                  <p className="m-0 truncate font-semibold text-[#020304]">
+                    {val}
+                  </p>
                 </div>
               );
             })}
@@ -126,7 +128,7 @@ export default function Profile() {
                   className="flex flex-col justify-between text-xl"
                 >
                   <p className="m-0 text-[#787A7C]">{label}</p>
-                  <p className="m-0 font-bold text-[#020304]">{val}</p>
+                  <p className="m-0 font-semibold text-[#020304]">{val}</p>
                 </div>
               );
             })}

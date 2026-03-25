@@ -32,8 +32,6 @@ export default function AddBorrower() {
 
     try {
       const res = await authService.addBorrower(data);
-      console.log("Submitting borrower:", data);
-      console.log("Server response:", res);
       await new Promise((r) => setTimeout(r, 800));
       setSuccess(true);
     } catch (err) {

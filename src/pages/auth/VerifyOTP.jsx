@@ -1,4 +1,3 @@
-// src/pages/auth/VerifyOTP.jsx
 import { useState, useRef, useEffect } from "react";
 import { useNavigate, useLocation, useSearchParams, Link } from "react-router";
 import { useAuth } from "../../features/auth/authContext";
@@ -45,7 +44,7 @@ export default function VerifyOTP() {
 
   const inputRefs = useRef([]);
 
-  // If coming from signup link — trigger OTP generation immediately
+  // If coming from signup link, trigger OTP generation immediately
   // Otherwise focus first input for manual entry
   useEffect(() => {
     if (fromSignupLink && token) {
@@ -196,12 +195,6 @@ export default function VerifyOTP() {
     }
   }
 
-  const maskEmail = (em) => {
-    const [user, domain] = em.split("@");
-    if (!domain) return em;
-    return `${user.slice(0, 2)}${"*".repeat(Math.max(user.length - 2, 3))}@${domain}`;
-  };
-
   return (
     <div style={s.page}>
       <div
@@ -245,23 +238,13 @@ export default function VerifyOTP() {
         </div>
 
         {/* Display OTP on screen since email service is not active */}
-        {displayOtp && (
+        {displayOtp ? (
           <div style={s.hint}>
             <strong>Your OTP:</strong> {displayOtp}
           </div>
+        ) : (
+          <p style={s.sub}>Please wait while we generate your OTP code.</p>
         )}
-
-        <p style={s.sub}>
-          {success ? (
-            fromLogin ? (
-              "Verified! Taking you to your dashboard…"
-            ) : (
-              "Your account has been verified. Redirecting to login…"
-            )
-          ) : (
-            <>Enter your 6-digit code below.</>
-          )}
-        </p>
 
         {/* OTP Form */}
         {!success && (

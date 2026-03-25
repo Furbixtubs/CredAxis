@@ -1,13 +1,11 @@
-// src/pages/auth/ResetPassword.jsx
 import { useState } from "react";
-import { Link, useNavigate, useSearchParams } from "react-router";
+import { Link, useNavigate, useLocation } from "react-router";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Loader2, Eye, EyeOff, CheckCircle2 } from "lucide-react";
 import { authService } from "@/services/authService";
 
-// Schema
 const resetPasswordSchema = z
   .object({
     newPassword: z
@@ -23,16 +21,16 @@ const resetPasswordSchema = z
     path: ["confirmPassword"],
   });
 
-// Main component
 export default function ResetPassword() {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const token = searchParams.get("token");
+  const location = useLocation();
 
   const [showNew, setShowNew] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [serverError, setServerError] = useState("");
   const [success, setSuccess] = useState(false);
+
+  const token = location.state?.token || null;
 
   const {
     register,
@@ -56,7 +54,9 @@ export default function ResetPassword() {
     try {
       const res = await authService.resetPassword(token, data.newPassword);
 
-      if (res.status === "success") {
+      const status = res.status || res.staus;
+
+      if (status === "success") {
         setSuccess(true);
         setTimeout(() => navigate("/login"), 3000);
       }
@@ -82,9 +82,6 @@ export default function ResetPassword() {
           <p style={s.sub}>
             Your password has been successfully reset. Redirecting you to login…
           </p>
-          <Link to="/login" style={s.btn}>
-            Go to Login
-          </Link>
         </section>
       </main>
     );
