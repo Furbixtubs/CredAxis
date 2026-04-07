@@ -63,8 +63,8 @@ export default function DashboardLayout() {
               pathname === "/dashboard/add-borrower" ||
               pathname === "/dashboard/borrower-scoring" ||
               pathname === "/dashboard/profile"
-                ? ""
-                : "mt-4"
+                ? "bg-white/90"
+                : "mt-4 bg-linear-to-br from-[#061546] via-[#0B298C] to-sky-500"
             }`}
           >
             <Outlet />

@@ -6,7 +6,7 @@ import DashboardLayout from "../layouts/DashboardLayout";
 import SettingsLayout from "../layouts/SettingsLayout";
 import ProtectedRoute from "../features/auth/ProtectedRoute";
 import PublicRoute from "@/features/auth/PublicRoute";
-import { action as addBorrowerAction } from "../pages/dashboard/add-borrower/AddBorrower";
+// import { action as addBorrowerAction } from "../pages/dashboard/add-borrower/AddBorrower";
 
 // ── Loading fallback ──────────────────────────────────────────────────────────
 function Loader() {
@@ -37,6 +37,8 @@ const Login = lazy(() => import("../pages/auth/login/Login"));
 const Signup = lazy(() => import("../pages/auth/signup/Signup"));
 const CheckEmail = lazy(() => import("../pages/auth/CheckEmail"));
 const VerifyOTP = lazy(() => import("../pages/auth/VerifyOTP"));
+const ForgotPassword = lazy(() => import("../pages/auth/ForgotPassword"));
+const ResetPassword = lazy(() => import("../pages/auth/ResetPassword"));
 
 // ── Dashboard pages ───────────────────────────────────────────────────────────
 const Overview = lazy(() => import("../pages/dashboard/overview/Overview"));
@@ -132,6 +134,22 @@ export const router = createBrowserRouter([
       </PublicRoute>
     ),
   },
+  {
+    path: "/forgot-password",
+    element: (
+      <PublicRoute>
+        <ForgotPassword />
+      </PublicRoute>
+    ),
+  },
+  {
+    path: "/reset-password",
+    element: (
+      <PublicRoute>
+        <ResetPassword />
+      </PublicRoute>
+    ),
+  },
 
   // ── Protected dashboard ─────────────────────────────────────────────────────
   {
@@ -146,7 +164,7 @@ export const router = createBrowserRouter([
       {
         path: "add-borrower",
         element: wrap(AddBorrower),
-        action: addBorrowerAction,
+        // action: addBorrowerAction,
       },
       { path: "borrowers", element: wrap(Borrowers) },
       { path: "borrowers/:id", element: wrap(BorrowerDetails) },

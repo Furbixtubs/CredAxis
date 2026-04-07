@@ -22,9 +22,13 @@ export const authService = {
   // Resend OTP
   resendOtp: (email) => api.post("/user/authOtp?status=login", { email }),
 
+  // Forgot password
+  forgotPassword: (email) => api.put("/user/forget-password", { email }),
+
+  // Reset password
+  resetPassword: (token, newPassword) =>
+    api.put(`/user/reset-password?token=${token}`, { newPassword }),
+
   // Get user profile
   getProfile: (userId) => api.get(`/user/${userId}`),
-
-  // add borrower
-  addBorrower: (borrowerData) => api.post("/bank/add-borrower", borrowerData),
 };
